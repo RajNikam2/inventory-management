@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class Customer extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -32,9 +34,21 @@ class Customer extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        // $order= new Order();
+        // $order->proforma_invoice = $req->proforma_invoice;
+        // $order->proforma_invoice_date = $req->proforma_invoice_date;
+        // $order->proforma_invoice_value = $req->proforma_invoice_value;
+        // $order->expected_commision = $req->expected_commision;
+        // $order->po_number =$req->po_number;
+        // $order->advance_payment =$req->advance_payment;
+        // $order->advance_balance = $req->advance_balance;
+        // $order->40_container = $req->40_container;
+        // $order->20_container = $req->20_container;
+        // $order->pallets_skids =$req->pallets_skids;
+        // $order->others =$req->others;
+        // ]);
     }
 
     /**
