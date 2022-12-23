@@ -4,15 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\TeamMember;
+use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filters\CustomerAbstractFilter;
 
 class Customer extends Model
 {
     use HasFactory;
+
     protected $table = 'customers';
 
     protected $fillable = [
-        'organization', 'address', 'notes'
+        'organization', 'address', 'notes', 'country_id', 'industry_id', 'type_id'
     ];
+    // public $sortable = ['organization', 'created_at'];
+    // protected $sortable = [
+    //     'organization', 'address', 'notes', 'country_id', 'industry_id', 'type_id'
+    // ];
     function country()
     {
         return $this->belongsTo(Country::class);
@@ -39,4 +48,14 @@ class Customer extends Model
     {
         return $this->morphMany(Url::class, 'urlable');
     }
+    function TeamMember()
+    {
+        return $this->belongsTo(TeamMember::class);
+    }
+
+    public function scopeFilter(Builder $builder, $request)
+    {
+        return (new CustomerAbstractFilter($request))->filter($builder);
+    }
+    
 }

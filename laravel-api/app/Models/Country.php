@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Filters\CountryFilter;
+use App\Filters\CustomerAbstractFilter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Suppliers;
@@ -26,4 +29,5 @@ class Country extends Model
     {
         return $this->hasMany(Suppliers::class);
     }
+    
 }

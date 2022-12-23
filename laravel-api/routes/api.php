@@ -32,8 +32,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('showcustomers', [CustomerController::class, 'showCustomers']);
-Route::post('savecustomer', [CustomerController::class, 'saveCustomer']);
+Route::get('customers', [CustomerController::class, 'showCustomers']);
+Route::post('customers', [CustomerController::class, 'saveCustomer']);
 Route::get('customers/{id}', [CustomerController::class, 'showCustomerById']);
 Route::patch('customers/{id}', [CustomerController::class, 'updateCustomer']);
 Route::delete('customers/{id}', [CustomerController::class, 'deleteCustomer']);
@@ -64,11 +64,11 @@ Route::get('/showbyidindustry/{id}', [IndustryController::class, 'showByIdIndust
 Route::delete('/deleteindustry/{id}', [IndustryController::class, 'deleteIndustry']);
 Route::patch('/updateindustry/{id}', [IndustryController::class, 'updateIndustry']);
 
-Route::post('/savecountry', [CountryController::class, 'saveCountry']);
-Route::get('/showcountry', [CountryController::class, 'showCountry']);
-Route::get('/showbyidcountry/{id}', [CountryController::class, 'showByIdCountry']);
-Route::delete('/deletecountry/{id}', [CountryController::class, 'deleteCountry']);
-Route::patch('/updatecountry/{id}', [CountryController::class, 'updateCountry']);
+Route::post('/countries', [CountryController::class, 'saveCountry']);
+Route::get('/countries', [CountryController::class, 'showCountry']);
+Route::get('/countries/{id}', [CountryController::class, 'showByIdCountry']);
+Route::delete('/countries/{id}', [CountryController::class, 'deleteCountry']);
+Route::patch('/countries/{id}', [CountryController::class, 'updateCountry']);
 
 
 Route::post('/savetype', [TypeController::class, 'saveType']);

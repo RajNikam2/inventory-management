@@ -25,9 +25,10 @@ class CreateCustomersTable extends Migration
             $table->foreign('country_id')->references('id')->on('countries');
             $table->bigInteger('type_id')->unsigned();
             $table->foreign('type_id')->references('id')->on('types');
-
             $table->timestamps();
-            $table->dateTime('deleted_at');
+            $table->unsignedBigInteger('team_member_id');
+            $table->foreign('team_member_id')->references('id')->on('TeamMembers');
+            $table->dateTime('deleted_at')->nullable();
         });
     }
 
