@@ -1,0 +1,32 @@
+import { Order } from "src/orders/orders.entity";
+import { Product } from "src/products/products.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+
+@Entity({name:'order_items'})
+export class OrderItem{
+    @PrimaryGeneratedColumn('uuid')
+    id:number;
+
+    @Column()
+    unit:string;
+
+    @Column()
+    quantity:number;
+
+    @ManyToOne(() => Product, (product) => product.orderItem)
+    @JoinColumn({ name: 'product_id' })
+    product: Product;
+
+    @ManyToOne(() => Order, (order) => order.orderItem)
+    @JoinColumn({ name: 'order_id' })
+    order: Order;
+
+    @CreateDateColumn({ name: "created_at" })
+    createdAt: Date;
+
+    @UpdateDateColumn({ name: "updated_at" })
+    updatedAt: Date;
+
+    @DeleteDateColumn({ name: "deleted_at" })
+    deletedAt: Date;
+}
