@@ -10,14 +10,14 @@ export class Product{
     id:number;
 
     @Column()
-    desciptions:number;
+    desciptions:string;
 
     @ManyToOne(() => Category, (category) => category.product)
-    @JoinColumn({ name: 'category_id' })
+    @JoinColumn({ name: 'categoryId' })
     category: Category;
 
     @ManyToOne(() => SubCategory, (subcategory) => subcategory.product)
-    @JoinColumn({ name: 'sub_category_id' })
+    @JoinColumn({ name: 'sub_categoryId' })
     subcategory: SubCategory;
 
     // @ManyToOne(() => Unit, (unit) => unit.product)

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -7,16 +7,16 @@ import { File } from "./files.entity";
 
 
 @Injectable()
-export class FileService{
+export class FileService {
     constructor(
         @InjectRepository(File) private fileRepository: Repository<File>,
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<File>> {
         return paginate(query, this.fileRepository, {
-            sortableColumns: ['file_name','file_path','file_type','description'],
-            defaultSortBy: [['id','ASC']],
-            searchableColumns: ['file_name','file_path','file_type','description'],
+            sortableColumns: ['file_name', 'file_path', 'file_type', 'description'],
+            defaultSortBy: [['id', 'ASC']],
+            searchableColumns: ['file_name', 'file_path', 'file_type', 'description'],
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
             // }
@@ -30,11 +30,20 @@ export class FileService{
     }
 
     async create(fileData: FileDto): Promise<FileDto> {
-        return await this.fileRepository.save(fileData);
+        try {
+            return await this.fileRepository.save(fileData);
+        } catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, fileData: FileDto): Promise<UpdateResult> {
-        return await this.fileRepository.update(id, fileData);
+
+        try {
+            return await this.fileRepository.update(id, fileData);
+        } catch (err) {
+            throw new BadRequestException(err.message)
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -51,4 +60,3 @@ export class FileService{
 
 
 
-    

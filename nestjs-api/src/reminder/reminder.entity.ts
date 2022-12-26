@@ -1,7 +1,7 @@
 import { Order } from "src/orders/orders.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity({name:'reminders'})
+@Entity({name:'reminder'})
 export class Reminder{
 
     @PrimaryGeneratedColumn('uuid')
