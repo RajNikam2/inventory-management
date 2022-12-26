@@ -29,7 +29,7 @@ import { ShippingLineModule } from './shipping-line/shipping-line.module';
 import { PortOfLoadingModule } from './port-of-loading/port-of-loading.module';
 import { DestinationPortModule } from './destination-port/destination-port.module';
 import { ShipmentByModule } from './shipment-by/shipment-by.module';
-import { UrlsModule } from './urls/urls.module';
+import { UrlModule } from './urls/urls.module';
 import { ComplaintModule } from './complaint/complaint.module';
 import { CountryModule } from './country/country.module';
 
@@ -43,7 +43,7 @@ import { CountryModule } from './country/country.module';
         database:'inventory_management_db',
         entities:[__dirname + '/**/*.entity{.ts,.js}'],
         synchronize:true, 
-       }),CustomerModule, SuppliersModule, TeamMemberModule,IndustryModule, ContactsModule, OrdersModule, DivisionModule, RegionModule, SaleTypeModule, CategoryModule, SubCategoryModule,CommentsModule, FilesModule, ProductsModule, ShipmentModule, PaymentModule, CommissionModule, DocumentsModule, PaymentTermModule, DeliveryTimeModule, DeliveryTermModule, ReminderModule, OrderItemModule, ShippingLineModule, PortOfLoadingModule, DestinationPortModule, ShipmentByModule, UrlsModule, ComplaintModule, CountryModule],
+       }),CustomerModule, SuppliersModule, TeamMemberModule,IndustryModule, ContactsModule, OrdersModule, DivisionModule, RegionModule, SaleTypeModule, CategoryModule, SubCategoryModule,CommentsModule, FilesModule, ProductsModule, ShipmentModule, PaymentModule, CommissionModule, DocumentsModule, PaymentTermModule, DeliveryTimeModule, DeliveryTermModule, ReminderModule, OrderItemModule, ShippingLineModule, PortOfLoadingModule, DestinationPortModule, ShipmentByModule, UrlModule, ComplaintModule, CountryModule],
   controllers: [AppController],
   providers: [AppService],
 })

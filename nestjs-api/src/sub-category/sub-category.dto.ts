@@ -1,7 +1,10 @@
+import { IsNotEmpty } from "class-validator";
 import { Category } from "src/category/category.entity";
 
-export class SubCategory{
-    subCategory_name:string;
+export class SubCategoryDto{
+
+    @IsNotEmpty()
+    subCategory:string;
     category: Category;
 
 }

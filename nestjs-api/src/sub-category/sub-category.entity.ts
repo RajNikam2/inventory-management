@@ -10,10 +10,10 @@ export class SubCategory{
     id:number;
 
     @Column()
-    subCategory_name:string;
+    subCategory:string;
 
     @ManyToOne(() => Category, (category) => category.subCategory)
-    @JoinColumn({ name: 'category_id' })
+    @JoinColumn({ name: 'categoryId' })
     category: Category;
 
     @OneToMany(() => Product,(product) => product.subcategory,{

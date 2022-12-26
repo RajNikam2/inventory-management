@@ -32,7 +32,7 @@ export class TeamMember{
         cascade: true  
     })
     order?: Order[];
-
+ 
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date;
 

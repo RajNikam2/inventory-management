@@ -2,7 +2,7 @@ import { Shipment } from "src/shipment/shipment.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'shipping_lines' })
-export class ShippingLine {
+export class ShippingLine{
 
     @PrimaryGeneratedColumn('uuid')
     id: number;

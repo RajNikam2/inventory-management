@@ -2,7 +2,7 @@ import { Order } from "src/orders/orders.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'files' })
-export class File {
+export class File{
 
     @PrimaryGeneratedColumn('uuid')
     id: number;

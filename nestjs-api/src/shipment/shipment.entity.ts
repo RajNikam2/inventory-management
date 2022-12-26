@@ -7,13 +7,13 @@ import { ShippingLine } from "src/shipping-line/shipping-line.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'shipments' })
-export class Shipment {
+export class Shipment{
 
     @PrimaryGeneratedColumn('uuid')
     id: number;
 
     // @Column()
-    invoice: number; //ask to sir about invoice table
+    // invoice: number; //ask to sir about invoice table
 
     @Column()
     sale_date: Date;
@@ -43,23 +43,23 @@ export class Shipment {
     container_number: number;
 
     @ManyToOne(() => Order, (order) => order.shipment)
-    @JoinColumn({ name: 'order_id' })
+    @JoinColumn({ name: 'orderId' })
     order: Order;
 
     @ManyToOne(() => ShippingLine, (shippingLine) => shippingLine.shipment)
-    @JoinColumn({ name: 'shippingLine_id' })
+    @JoinColumn({ name: 'shippingLineId' })
     shppingLine: ShippingLine;
 
     @ManyToOne(() => ShipmentBy, (shipmentBy) => shipmentBy.shipment)
-    @JoinColumn({ name: 'shippingBy_id' })
+    @JoinColumn({ name: 'shippingById' })
     shipmentBy: ShipmentBy;
 
     @ManyToOne(() => DestinationPort, (destinationPort) => destinationPort.shipment)
-    @JoinColumn({ name: 'destinationPort_id' })
+    @JoinColumn({ name: 'destinationPortId' })
     destinationPort: DestinationPort;
 
     @ManyToOne(() => PortOfLoading, (portOfLoding) => portOfLoding.shipment)
-    @JoinColumn({ name: 'portOfLoading_id' })
+    @JoinColumn({ name: 'portOfLoadingId' })
     portOfLoding: PortOfLoading;
 
     @OneToMany(() => Document, (docment) => docment.shipment, {

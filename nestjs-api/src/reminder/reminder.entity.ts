@@ -14,7 +14,7 @@ export class Reminder{
     action:string;
     
     @ManyToOne(() => Order, (order) => order.reminder)
-    @JoinColumn({ name: 'order_id' })
+    @JoinColumn({ name: 'orderId' })
     order: Order;
 
     @CreateDateColumn({ name: "created_at" })
