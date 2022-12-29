@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -7,19 +7,19 @@ import { TeamMember } from "./team-member.entity";
 
 
 @Injectable()
-export class TeamMemberService{
+export class TeamMemberService {
     constructor(
-        @InjectRepository(TeamMember) private teamMemberRepository: Repository<TeamMember>,
+        @InjectRepository(TeamMember) private teamMemberRepository: Repository<TeamMember>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<TeamMember>> {
         return paginate(query, this.teamMemberRepository, {
-            sortableColumns: ['last_name','first_name','position','assigned_territories'],
-            relations: ['country'], 
-            defaultSortBy: [['id','ASC',]],
-            searchableColumns: ['last_name','first_name','position','assigned_territories'],
+            sortableColumns: ['last_name', 'first_name', 'position', 'assigned_territories'],
+            relations: ['country'],
+            defaultSortBy: [['id', 'ASC',]],
+            searchableColumns: ['last_name', 'first_name', 'position', 'assigned_territories'],
             filterableColumns: {
-                'country.id':[FilterOperator.EQ]
+                'country.id': [FilterOperator.EQ]
             }
         })
     }
@@ -31,11 +31,19 @@ export class TeamMemberService{
     }
 
     async create(teamMemberData: TeamMemberDto): Promise<TeamMemberDto> {
-        return await this.teamMemberRepository.save(teamMemberData);
+        try{
+            return await this.teamMemberRepository.save(teamMemberData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, teamMemberData: TeamMemberDto): Promise<UpdateResult> {
-        return await this.teamMemberRepository.update(id, teamMemberData);
+       try{
+            return await this.teamMemberRepository.update(id, teamMemberData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -52,4 +60,3 @@ export class TeamMemberService{
 
 
 
-    

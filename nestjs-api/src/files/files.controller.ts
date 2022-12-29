@@ -7,7 +7,7 @@ import { FileService } from "./files.service";
 @Controller('file')
 export class FileController {
   constructor(
-    private readonly fileService: FileService,
+    private readonly fileService: FileService
   ) { }
 
   @Get()

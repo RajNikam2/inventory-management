@@ -28,11 +28,9 @@ export class Payment{
     @Column()
     no_of_days:number;
 
-    @OneToMany(() => Order, (order) => order.payments, {
-        // eager: true,
-        // cascade: true
-    })
-    order?: Order[];
+    @ManyToOne(() => Order, (order) => order.payment)
+    @JoinColumn({ name: 'orderId' })
+    order: Order;
 
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date;

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -6,7 +6,7 @@ import { DeliveryTimeDto } from "./delivery-time.dto";
 import { DeliveryTime } from "./delivery-time.entity";
 
 @Injectable()
-export class DeliveryTimeService{
+export class DeliveryTimeService {
     constructor(
         @InjectRepository(DeliveryTime) private deliveryTimeRepository: Repository<DeliveryTime>,
     ) { }
@@ -14,11 +14,8 @@ export class DeliveryTimeService{
     public listAll(query: PaginateQuery): Promise<Paginated<DeliveryTime>> {
         return paginate(query, this.deliveryTimeRepository, {
             sortableColumns: ['time'],
-            defaultSortBy: [['id','DESC']],
+            defaultSortBy: [['id', 'DESC']],
             searchableColumns: ['time'],
-            // filterableColumns: {
-            //     address: [FilterOperator.GTE, FilterOperator.LTE],
-            // }
         })
     }
 
@@ -29,11 +26,19 @@ export class DeliveryTimeService{
     }
 
     async create(deliveryTimeData: DeliveryTimeDto): Promise<DeliveryTimeDto> {
-        return await this.deliveryTimeRepository.save(deliveryTimeData);
+       try {
+            return await this.deliveryTimeRepository.save(deliveryTimeData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, deliveryTimeData: DeliveryTimeDto): Promise<UpdateResult> {
-        return await this.deliveryTimeRepository.update(id, deliveryTimeData);
+      try {
+            return await this.deliveryTimeRepository.update(id, deliveryTimeData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -50,4 +55,3 @@ export class DeliveryTimeService{
 
 
 
-    

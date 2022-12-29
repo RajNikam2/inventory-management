@@ -7,7 +7,7 @@ import { SalteTypeService } from "./sale-type.service";
 @Controller('saletype')
 export class saletypeController {
   constructor(
-    private readonly saletypeService:SalteTypeService,
+    private readonly saletypeService:SalteTypeService
   ) { }
 
   @Get()

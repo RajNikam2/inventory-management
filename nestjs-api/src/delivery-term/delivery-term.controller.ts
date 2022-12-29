@@ -7,7 +7,7 @@ import { DeliveryTermService } from "./delivery-term.service";
 @Controller('deliveryTerm')
 export class DeliveryTermController {
   constructor(
-    private readonly deliveryTermService: DeliveryTermService,
+    private readonly deliveryTermService: DeliveryTermService
   ) { }
 
   @Get()

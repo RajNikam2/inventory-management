@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -7,19 +7,17 @@ import { DeliveryTerm } from "./delivery-term.entity";
 
 
 @Injectable()
-export class DeliveryTermService{
+export class DeliveryTermService {
     constructor(
-        @InjectRepository(DeliveryTerm) private deliveryTermRepository: Repository<DeliveryTerm>,
+        @InjectRepository(DeliveryTerm) private deliveryTermRepository: Repository<DeliveryTerm>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<DeliveryTerm>> {
         return paginate(query, this.deliveryTermRepository, {
-            sortableColumns: ['delivery'],
-            // defaultSortBy: ['po_number'],
-            searchableColumns: ['delivery'],
-            // filterableColumns: {
-            //     address: [FilterOperator.GTE, FilterOperator.LTE],
-            // }
+            sortableColumns: ['deliveryTerm'],
+            defaultSortBy: [['id','ASC']],
+            searchableColumns: ['deliveryTerm'],
+            
         })
     }
 
@@ -30,11 +28,19 @@ export class DeliveryTermService{
     }
 
     async create(deliveryTermData: DeliveryTermDto): Promise<DeliveryTermDto> {
-        return await this.deliveryTermRepository.save(deliveryTermData);
+       try {
+            return await this.deliveryTermRepository.save(deliveryTermData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, deliveryTermData: DeliveryTermDto): Promise<UpdateResult> {
-        return await this.deliveryTermRepository.update(id, deliveryTermData);
+       try {
+            return await this.deliveryTermRepository.update(id, deliveryTermData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -51,4 +57,3 @@ export class DeliveryTermService{
 
 
 
-    

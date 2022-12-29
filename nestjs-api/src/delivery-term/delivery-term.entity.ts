@@ -8,7 +8,7 @@ export class DeliveryTerm{
     id:number;
 
     @Column()
-    delivery:string;
+    deliveryTerm:string;
 
     @OneToMany(() => Order, (order) => order.deliveryTerm, {
         eager: true,

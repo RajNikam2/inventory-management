@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -7,19 +7,16 @@ import { Category } from "./category.entity";
 
 
 @Injectable()
-export class CategoryService{
+export class CategoryService {
     constructor(
-        @InjectRepository(Category) private categoryRepository: Repository<Category>,
+        @InjectRepository(Category) private categoryRepository: Repository<Category>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<Category>> {
         return paginate(query, this.categoryRepository, {
             sortableColumns: ['name'],
-            defaultSortBy: [['id','ASC']],
-            searchableColumns: ['name'],
-            // filterableColumns: {
-            //     address: [FilterOperator.GTE, FilterOperator.LTE],
-            // }
+            defaultSortBy: [['id', 'ASC']],
+            searchableColumns: ['name']
         })
     }
 
@@ -30,11 +27,19 @@ export class CategoryService{
     }
 
     async create(categoryData: CategoryDto): Promise<CategoryDto> {
-        return await this.categoryRepository.save(categoryData);
+        try {
+            return await this.categoryRepository.save(categoryData);
+        } catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, orderData: CategoryDto): Promise<UpdateResult> {
-        return await this.categoryRepository.update(id, orderData);
+      try  {
+            return await this.categoryRepository.update(id, orderData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -51,4 +56,3 @@ export class CategoryService{
 
 
 
-    

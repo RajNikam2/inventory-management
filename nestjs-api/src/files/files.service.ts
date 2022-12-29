@@ -9,7 +9,7 @@ import { File } from "./files.entity";
 @Injectable()
 export class FileService {
     constructor(
-        @InjectRepository(File) private fileRepository: Repository<File>,
+        @InjectRepository(File) private fileRepository: Repository<File>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<File>> {
@@ -17,9 +17,7 @@ export class FileService {
             sortableColumns: ['file_name', 'file_path', 'file_type', 'description'],
             defaultSortBy: [['id', 'ASC']],
             searchableColumns: ['file_name', 'file_path', 'file_type', 'description'],
-            // filterableColumns: {
-            //     address: [FilterOperator.GTE, FilterOperator.LTE],
-            // }
+        
         })
     }
 

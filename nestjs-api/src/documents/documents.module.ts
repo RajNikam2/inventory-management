@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
-import { DocumentsService } from './documents.service';
-import { DocumentsController } from './documents.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DocumentController } from './documents.controller';
+import { Document } from './documents.entity';
+import { DocumentService } from './documents.service';
 
 @Module({
-  controllers: [DocumentsController],
-  providers: [DocumentsService]
+  imports:[TypeOrmModule.forFeature([Document])],
+  controllers: [DocumentController],
+  providers: [DocumentService],
+  exports:[DocumentService]
 })
 export class DocumentsModule {}

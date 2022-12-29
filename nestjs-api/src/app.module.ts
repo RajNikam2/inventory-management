@@ -7,7 +7,7 @@ import { SuppliersModule } from './suppliers/suppliers.module';
 import { TeamMemberModule } from './team-member/team-member.module';
 import { IndustryModule } from './industry/industry.module';
 import { ContactsModule } from './contacts/contacts.module';
-import { OrdersModule } from './orders/orders.module';
+import { OrderModule } from './orders/orders.module';
 import { DivisionModule } from './division/division.module';
 import { RegionModule } from './region/region.module';
 import { SaleTypeModule } from './sale-type/sale-type.module';
@@ -32,19 +32,18 @@ import { ShipmentByModule } from './shipment-by/shipment-by.module';
 import { UrlModule } from './urls/urls.module';
 import { ComplaintModule } from './complaint/complaint.module';
 import { CountryModule } from './country/country.module';
-
 @Module({
   imports: [TypeOrmModule.forRoot({
-    type:"mysql",
-        host:"localhost",
-        port:3306,
-        username:"root",
-        // password:'',
-        database:'inventory_management_db',
-        entities:[__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize:true, 
-       }),CustomerModule, SuppliersModule, TeamMemberModule,IndustryModule, ContactsModule, OrdersModule, DivisionModule, RegionModule, SaleTypeModule, CategoryModule, SubCategoryModule,CommentsModule, FilesModule, ProductsModule, ShipmentModule, PaymentModule, CommissionModule, DocumentsModule, PaymentTermModule, DeliveryTimeModule, DeliveryTermModule, ReminderModule, OrderItemModule, ShippingLineModule, PortOfLoadingModule, DestinationPortModule, ShipmentByModule, UrlModule, ComplaintModule, CountryModule],
+    type: "mysql",
+    host: "localhost",
+    port: 3306,
+    username: "root",
+    // password:'',
+    database: 'inventory_management_db',
+    entities: [__dirname + '/**/*.entity{.ts,.js}'],
+    synchronize: true,
+  }), CustomerModule, SuppliersModule, TeamMemberModule, IndustryModule, ContactsModule, OrderModule, DivisionModule, RegionModule, SaleTypeModule, CategoryModule, SubCategoryModule, CommentsModule, FilesModule, ProductsModule, ShipmentModule, PaymentModule, CommissionModule, DocumentsModule, PaymentTermModule, DeliveryTimeModule, DeliveryTermModule, ReminderModule, OrderItemModule, ShippingLineModule, PortOfLoadingModule, DestinationPortModule, ShipmentByModule, UrlModule, ComplaintModule, CountryModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

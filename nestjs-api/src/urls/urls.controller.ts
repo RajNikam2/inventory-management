@@ -7,7 +7,7 @@ import { UrlService } from "./urls.service";
 @Controller('url')
 export class UrlController {
   constructor(
-    private readonly urlService: UrlService,
+    private readonly urlService: UrlService
   ) { }
 
   @Get('')

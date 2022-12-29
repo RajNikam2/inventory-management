@@ -7,7 +7,7 @@ import { CountryService } from "./country.service";
 @Controller('country')
 export class CountryController {
   constructor(
-    private readonly countryService: CountryService,
+    private readonly countryService: CountryService
   ) { }
 
   @Get()

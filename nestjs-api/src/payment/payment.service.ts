@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -7,16 +7,16 @@ import { Payment } from "./payment.entity";
 
 
 @Injectable()
-export class PaymentService{
+export class PaymentService {
     constructor(
-        @InjectRepository(Payment) private paymentRepository: Repository<Payment>,
+        @InjectRepository(Payment) private paymentRepository: Repository<Payment>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<Payment>> {
         return paginate(query, this.paymentRepository, {
-            sortableColumns: ['eta','balance','invoice_amount','invoice_number','no_of_days','bl','due_date'],
-            defaultSortBy: [['id','ASC']],
-            searchableColumns: ['eta','balance','invoice_amount','invoice_number','no_of_days','bl','due_date'],
+            sortableColumns: ['eta', 'balance', 'invoice_amount', 'invoice_number', 'no_of_days', 'bl', 'due_date'],
+            defaultSortBy: [['id', 'ASC']],
+            searchableColumns: ['eta', 'balance', 'invoice_amount', 'invoice_number', 'no_of_days', 'bl', 'due_date'],
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
             // }
@@ -29,12 +29,20 @@ export class PaymentService{
         });
     }
 
-    async create(paymentData:PaymentDto): Promise<PaymentDto> {
-        return await this.paymentRepository.save(paymentData);
+    async create(paymentData: PaymentDto): Promise<PaymentDto> {
+       try {
+            return await this.paymentRepository.save(paymentData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, paymentData: PaymentDto): Promise<UpdateResult> {
-        return await this.paymentRepository.update(id, paymentData);
+       try {
+            return await this.paymentRepository.update(id, paymentData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -51,4 +59,3 @@ export class PaymentService{
 
 
 
-    

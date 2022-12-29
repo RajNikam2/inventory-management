@@ -24,6 +24,7 @@ export class Supplier {
     @Column()
     notes: string;
 
+
     @PolymorphicChildren(() => Contact, {
         eager: false,
     })

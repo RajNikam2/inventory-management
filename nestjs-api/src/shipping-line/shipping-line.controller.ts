@@ -7,7 +7,7 @@ import { ShippingLineService } from "./shipping-line.service";
 @Controller('shippingline')
 export class ShippingLineController {
   constructor(
-    private readonly shippingLineService: ShippingLineService,
+    private readonly shippingLineService: ShippingLineService
   ) { }
 
   @Get()

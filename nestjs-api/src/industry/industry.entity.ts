@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, MaxLength, MinLength } from "class-validator"
+import { IsNotEmpty } from "class-validator";
 import { Customer} from "src/customer/customer.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 
@@ -12,7 +12,7 @@ export class Industry{
     @IsNotEmpty()
     name:string;
 
-    @OneToMany(() => Customer, (customer) => customer.Industry,{
+    @OneToMany(() => Customer, (customer) => customer.industry,{
         eager: true, 
         cascade: true  
     })

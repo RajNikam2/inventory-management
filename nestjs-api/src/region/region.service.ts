@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -7,15 +7,15 @@ import { Region } from "./region.entity";
 
 
 @Injectable()
-export class RegionService{
+export class RegionService {
     constructor(
-        @InjectRepository(Region) private regionRepository: Repository<Region>,
+        @InjectRepository(Region) private regionRepository: Repository<Region>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<Region>> {
         return paginate(query, this.regionRepository, {
             sortableColumns: ['name'],
-            defaultSortBy: [['id','DESC']],
+            defaultSortBy: [['id', 'DESC']],
             searchableColumns: ['name'],
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
@@ -30,11 +30,19 @@ export class RegionService{
     }
 
     async create(regionData: RegionDto): Promise<RegionDto> {
-        return await this.regionRepository.save(regionData);
+        try{
+            return await this.regionRepository.save(regionData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, regionData: RegionDto): Promise<UpdateResult> {
-        return await this.regionRepository.update(id, regionData);
+        try{
+            return await this.regionRepository.update(id, regionData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -51,4 +59,3 @@ export class RegionService{
 
 
 
-    

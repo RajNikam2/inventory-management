@@ -1,4 +1,3 @@
-import { IsNotEmpty} from "class-validator"
 import { Comment } from "src/comments/comments.entity";
 import { Commission } from "src/commission/commission.entity";
 import { Country } from "src/country/country.entity";
@@ -104,10 +103,6 @@ export class Order{
     @JoinColumn({ name: 'deliveryTimeId' })
     deliveryTime: DeliveryTime;
 
-    @ManyToOne(() => Payment, (payment) => payment.order)
-    @JoinColumn({ name: 'paymentId' })
-    payments: Payment;
-
     @OneToMany(() => Comment,(comment) => comment.order,{
         eager: true,
         cascade: true
@@ -120,7 +115,7 @@ export class Order{
     })
     reminder?: Reminder[];
 
-    @OneToMany(() => File,(file) => file.order,{
+     @OneToMany(() => File,(file) => file.order,{
         eager: true,
         cascade: true
     })
@@ -155,7 +150,7 @@ export class Order{
         cascade: true
     })
     orderItem?: OrderItem[];
-    
+
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date;
 
@@ -164,5 +159,6 @@ export class Order{
 
     @DeleteDateColumn({ name: "deleted_at" })
     deletedAt: Date;
+
 
 }

@@ -33,11 +33,11 @@ export class Document{
     comments:string;
 
     @ManyToOne(() => Shipment, (shipment) => shipment.document)
-    @JoinColumn({ name: 'shipment_id' })
+    @JoinColumn({ name: 'shipmentId' })
     shipment: Shipment;
 
     @ManyToOne(() => Order, (order) => order.document)
-    @JoinColumn({ name: 'order_id' })
+    @JoinColumn({ name: 'orderId' })
     order: Order;
 
     @CreateDateColumn({ name: "created_at" })

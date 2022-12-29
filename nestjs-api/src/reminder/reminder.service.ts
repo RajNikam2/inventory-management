@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -7,17 +7,17 @@ import { Reminder } from "./reminder.entity";
 
 
 @Injectable()
-export class ReminderService{
+export class ReminderService {
     constructor(
-        @InjectRepository(Reminder) private reminderRepository: Repository<Reminder>,
+        @InjectRepository(Reminder) private reminderRepository: Repository<Reminder>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<Reminder>> {
         return paginate(query, this.reminderRepository, {
-            sortableColumns: ['reminder','action'],
-            relations:['order'],
-            defaultSortBy: [['id','ASC']],
-            searchableColumns: ['reminder','action'],
+            sortableColumns: ['reminder', 'action'],
+            // relations: ['or'],
+            defaultSortBy: [['id', 'ASC']],
+            searchableColumns: ['reminder', 'action'],
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
             // }
@@ -31,11 +31,19 @@ export class ReminderService{
     }
 
     async create(reminderData: ReminderDto): Promise<ReminderDto> {
-        return await this.reminderRepository.save(reminderData);
+       try {
+            return await this.reminderRepository.save(reminderData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, reminderData: ReminderDto): Promise<UpdateResult> {
-        return await this.reminderRepository.update(id, reminderData);
+       try {
+            return await this.reminderRepository.update(id, reminderData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -52,4 +60,3 @@ export class ReminderService{
 
 
 
-    

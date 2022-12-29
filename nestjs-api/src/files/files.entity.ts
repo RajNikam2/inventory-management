@@ -20,7 +20,7 @@ export class File{
     file_path: string;
 
     @ManyToOne(() => Order, (order) => order.file)
-    @JoinColumn({ name: 'order_id' })
+    @JoinColumn({ name: 'orderId' })
     order: Order;
 
     @CreateDateColumn({ name: "created_at" })

@@ -1,5 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import { Paginate, Paginated, PaginateQuery } from "nestjs-paginate";
+import { OrderDto } from "src/orders/orders.dto";
+import { Order } from "src/orders/orders.entity";
+import { OrderService } from "src/orders/orders.service";
 import { CustomerDto } from "./customer.dto";
 import { Customer } from "./customer.entity";
 import { CustomerService } from "./customer.service";
@@ -8,7 +11,7 @@ import { CustomerService } from "./customer.service";
 @Controller('customer')
 export class CustomerController {
   constructor(
-    private readonly customerService: CustomerService,
+    private readonly customerService: CustomerService
   ) { }
 
   @Get()
@@ -35,5 +38,6 @@ export class CustomerController {
   async delete(@Param('id') id): Promise<any> {
     return this.customerService.delete(id);
   }
+
 }
 

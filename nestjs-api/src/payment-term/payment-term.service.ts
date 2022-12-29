@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -7,15 +7,15 @@ import { PaymentTerm } from "./payment-term.entity";
 
 
 @Injectable()
-export class PaymentTermService{
+export class PaymentTermService {
     constructor(
-        @InjectRepository(PaymentTerm) private paymentTermRepository: Repository<PaymentTerm>,
+        @InjectRepository(PaymentTerm) private paymentTermRepository: Repository<PaymentTerm>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<PaymentTerm>> {
         return paginate(query, this.paymentTermRepository, {
             sortableColumns: ['name'],
-            defaultSortBy: [['id','DESC']],
+            defaultSortBy: [['id', 'DESC']],
             searchableColumns: ['name'],
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
@@ -30,11 +30,19 @@ export class PaymentTermService{
     }
 
     async create(PaymentTermData: PaymentTermDto): Promise<PaymentTermDto> {
-        return await this.paymentTermRepository.save(PaymentTermData);
+       try {
+            return await this.paymentTermRepository.save(PaymentTermData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, PaymentTermData: PaymentTermDto): Promise<UpdateResult> {
-        return await this.paymentTermRepository.update(id, PaymentTermData);
+       try {
+            return await this.paymentTermRepository.update(id, PaymentTermData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -51,4 +59,3 @@ export class PaymentTermService{
 
 
 
-    

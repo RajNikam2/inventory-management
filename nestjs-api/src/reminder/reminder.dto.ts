@@ -9,6 +9,6 @@ export class ReminderDto{
     @IsNotEmpty()
     action:string;
     
-    order: Order;
+    // order: Order;
 
 }

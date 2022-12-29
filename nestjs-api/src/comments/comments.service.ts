@@ -1,29 +1,29 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
-import { CommentDto} from "./comments.dto";
+import { CommentDto } from "./comments.dto";
 import { Comment } from "./comments.entity";
 
 
 @Injectable()
-export class CommentService{
+export class CommentService {
     constructor(
-        @InjectRepository(Comment) private commentRepository: Repository<Comment>,
+        @InjectRepository(Comment) private commentRepository: Repository<Comment>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<Comment>> {
         return paginate(query, this.commentRepository, {
             sortableColumns: ['comments'],
-            relations:['order'],
-            defaultSortBy: [['id','ASC']],   
+            relations: ['order'],
+            defaultSortBy: [['id','ASC']],
             searchableColumns: ['action'],
             // filterableColumns: {
-            //     address: [FilterOperator.GTE, FilterOperator.LTE],
+            //     'order.id':[FilterOperator.EQ]
             // }
         })
     }
-    
+
     async listCommentById(id: any) {
         return this.commentRepository.findOne({
             where: { id: id }
@@ -31,11 +31,19 @@ export class CommentService{
     }
 
     async create(commentData: CommentDto): Promise<CommentDto> {
-        return await this.commentRepository.save(commentData);
+        try {
+            return await this.commentRepository.save(commentData);
+        } catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, commentData: CommentDto): Promise<UpdateResult> {
-        return await this.commentRepository.update(id, commentData);
+        try {
+            return await this.commentRepository.update(id, commentData);
+        } catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -52,4 +60,3 @@ export class CommentService{
 
 
 
-    

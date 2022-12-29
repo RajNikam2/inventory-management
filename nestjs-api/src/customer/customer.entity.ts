@@ -1,9 +1,9 @@
 import { Contact} from "src/contacts/contacts.entity";
 import { Order } from "src/orders/orders.entity";
 import { Country } from "src/country/country.entity";
-import { Industry } from "src/industry/industry.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 import { PolymorphicChildren } from "typeorm-polymorphic";
+import { Industry } from "src/industry/industry.entity";
 
 @Entity({ name: 'customers' })
 export class Customer{
@@ -34,7 +34,7 @@ export class Customer{
 
     @ManyToOne(() => Industry, (industry) => industry.customer)
     @JoinColumn({ name: 'industryId' })
-    Industry: Industry;
+    industry: Industry;
 
     @OneToMany(() => Order, (order) => order.customer, {
         eager: true,

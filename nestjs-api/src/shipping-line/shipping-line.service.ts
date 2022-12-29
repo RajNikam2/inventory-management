@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -7,15 +7,15 @@ import { ShippingLine } from "./shipping-line.entity";
 
 
 @Injectable()
-export class ShippingLineService{
+export class ShippingLineService {
     constructor(
-        @InjectRepository(ShippingLine) private shippingLineRepository: Repository<ShippingLine>,
+        @InjectRepository(ShippingLine) private shippingLineRepository: Repository<ShippingLine>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<ShippingLine>> {
         return paginate(query, this.shippingLineRepository, {
             sortableColumns: ['shipping_line'],
-            defaultSortBy: [['id','ASC']],
+            defaultSortBy: [['id', 'ASC']],
             searchableColumns: ['shipping_line'],
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
@@ -30,11 +30,19 @@ export class ShippingLineService{
     }
 
     async create(shippinglineData: ShippingLineDto): Promise<ShippingLineDto> {
-        return await this.shippingLineRepository.save(shippinglineData);
+      try{
+            return await this.shippingLineRepository.save(shippinglineData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, shippinglineData: ShippingLineDto): Promise<UpdateResult> {
-        return await this.shippingLineRepository.update(id, shippinglineData);
+        try{
+            return await this.shippingLineRepository.update(id, shippinglineData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -51,4 +59,3 @@ export class ShippingLineService{
 
 
 
-    

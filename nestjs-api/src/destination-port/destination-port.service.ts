@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -7,7 +7,7 @@ import { DestinationPort } from "./destination-port.entity";
 
 
 @Injectable()
-export class DestinationPortService{
+export class DestinationPortService {
     constructor(
         @InjectRepository(DestinationPort) private destionationPortRepository: Repository<DestinationPort>,
     ) { }
@@ -15,7 +15,7 @@ export class DestinationPortService{
     public listAll(query: PaginateQuery): Promise<Paginated<DestinationPort>> {
         return paginate(query, this.destionationPortRepository, {
             sortableColumns: ['destination_port'],
-            defaultSortBy: [['id','DESC',]],        
+            defaultSortBy: [['id', 'DESC',]],
             searchableColumns: ['destination_port'],
             // filterableColumns: {
             //     country:[FilterOperator.EQ]
@@ -30,11 +30,19 @@ export class DestinationPortService{
     }
 
     async create(destinationPortData: DestinationPortDto): Promise<DestinationPortDto> {
-        return await this.destionationPortRepository.save(destinationPortData);
+       try {
+            return await this.destionationPortRepository.save(destinationPortData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, destinationPortData: DestinationPortDto): Promise<UpdateResult> {
-        return await this.destionationPortRepository.update(id, destinationPortData);
+        try{
+            return await this.destionationPortRepository.update(id, destinationPortData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -51,4 +59,3 @@ export class DestinationPortService{
 
 
 
-    

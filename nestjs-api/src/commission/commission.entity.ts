@@ -22,7 +22,7 @@ export class Commission {
     percentage:number;
 
     @ManyToOne(() => Order, (order) => order.commission)
-    @JoinColumn({ name: 'order_id' })
+    @JoinColumn({ name: 'orderId' })
     order: Order;
 
     @CreateDateColumn({ name: "created_at" })

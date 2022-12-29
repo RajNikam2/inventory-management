@@ -1,22 +1,22 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
-import { sulpplierDto} from "./suppliers.dto";
+import { sulpplierDto } from "./suppliers.dto";
 import { Supplier } from "./suppliers.entity";
 
 
 @Injectable()
-export class SupplierService{
+export class SupplierService {
     constructor(
-        @InjectRepository(Supplier) private supplierRepository: Repository<Supplier>,
+        @InjectRepository(Supplier) private supplierRepository: Repository<Supplier>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<Supplier>> {
         return paginate(query, this.supplierRepository, {
-            sortableColumns: ['organization','supplier_type','address'],
-            defaultSortBy: [['id','DESC']],
-            searchableColumns: ['organization','supplier_type','address'],
+            sortableColumns: ['organization', 'supplier_type', 'address'],
+            defaultSortBy: [['id', 'DESC']],
+            searchableColumns: ['organization', 'supplier_type', 'address'],
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
             // }
@@ -30,11 +30,19 @@ export class SupplierService{
     }
 
     async create(supplierData: sulpplierDto): Promise<sulpplierDto> {
-        return await this.supplierRepository.save(supplierData);
+       try {
+            return await this.supplierRepository.save(supplierData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, supplierData: sulpplierDto): Promise<UpdateResult> {
-        return await this.supplierRepository.update(id, supplierData);
+       try {
+            return await this.supplierRepository.update(id, supplierData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -51,4 +59,3 @@ export class SupplierService{
 
 
 
-    

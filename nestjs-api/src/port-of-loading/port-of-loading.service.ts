@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -7,15 +7,15 @@ import { PortOfLoading } from "./port-of-loading.entity";
 
 
 @Injectable()
-export class PortOfLoadingService{
+export class PortOfLoadingService {
     constructor(
-        @InjectRepository(PortOfLoading) private portofLoadingRepository: Repository<PortOfLoading>,
+        @InjectRepository(PortOfLoading) private portofLoadingRepository: Repository<PortOfLoading>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<PortOfLoading>> {
         return paginate(query, this.portofLoadingRepository, {
             sortableColumns: ['loading_port'],
-            defaultSortBy: [['id','ASC']],
+            defaultSortBy: [['id', 'ASC']],
             searchableColumns: ['loading_port'],
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
@@ -30,11 +30,19 @@ export class PortOfLoadingService{
     }
 
     async create(portofloadingData: PortOfLoadingDto): Promise<PortOfLoadingDto> {
-        return await this.portofLoadingRepository.save(portofloadingData);
+       try {
+            return await this.portofLoadingRepository.save(portofloadingData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, portofloadingData: PortOfLoadingDto): Promise<UpdateResult> {
-        return await this.portofLoadingRepository.update(id, portofloadingData);
+       try {
+            return await this.portofLoadingRepository.update(id, portofloadingData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -51,4 +59,3 @@ export class PortOfLoadingService{
 
 
 
-    

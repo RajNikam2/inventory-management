@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -6,15 +6,15 @@ import { SaleType } from "./sale-type.entity";
 
 
 @Injectable()
-export class SalteTypeService{
+export class SalteTypeService {
     constructor(
-        @InjectRepository(SaleType) private saletypeRepository: Repository<SaleType>,
+        @InjectRepository(SaleType) private saletypeRepository: Repository<SaleType>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<SaleType>> {
         return paginate(query, this.saletypeRepository, {
             sortableColumns: ['name'],
-            defaultSortBy: [['id','DESC']],
+            defaultSortBy: [['id', 'DESC']],
             searchableColumns: ['name'],
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
@@ -29,11 +29,19 @@ export class SalteTypeService{
     }
 
     async create(saletypeData: SaleType): Promise<SaleType> {
-        return await this.saletypeRepository.save(saletypeData);
+       try {
+            return await this.saletypeRepository.save(saletypeData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, saletypeData: SaleType): Promise<UpdateResult> {
-        return await this.saletypeRepository.update(id, saletypeData);
+       try {
+            return await this.saletypeRepository.update(id, saletypeData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -50,4 +58,3 @@ export class SalteTypeService{
 
 
 
-    

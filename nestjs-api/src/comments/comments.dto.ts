@@ -1,11 +1,15 @@
 import { IsNotEmpty, IsString } from "class-validator";
+import { Order } from "src/orders/orders.entity";
 
-export class CommentDto{
+export class CommentDto {
 
     @IsNotEmpty()
     @IsString()
-    comments:string;
+    comments: string;
 
     @IsNotEmpty()
-    action:string;
+    action: string;
+
+    order: Order;
+
 }

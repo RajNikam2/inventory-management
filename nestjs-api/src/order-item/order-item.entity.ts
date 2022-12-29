@@ -14,11 +14,11 @@ export class OrderItem{
     quantity:number;
 
     @ManyToOne(() => Product, (product) => product.orderItem)
-    @JoinColumn({ name: 'product_id' })
+    @JoinColumn({ name: 'productId' })
     product: Product;
 
     @ManyToOne(() => Order, (order) => order.orderItem)
-    @JoinColumn({ name: 'order_id' })
+    @JoinColumn({ name: 'orderId' })
     order: Order;
 
     @CreateDateColumn({ name: "created_at" })

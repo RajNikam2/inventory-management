@@ -1,4 +1,5 @@
 import { IsNotEmpty } from "class-validator";
+import { Order } from "src/orders/orders.entity";
 
 export class CommissionDto{
 
@@ -16,5 +17,7 @@ export class CommissionDto{
 
     @IsNotEmpty()
     percentage:number;
+
+    order: Order;
 
 }

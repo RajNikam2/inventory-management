@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { CustomerDto } from "src/customer/customer.dto";
@@ -8,16 +8,16 @@ import { Contact } from "./contacts.entity";
 
 
 @Injectable()
-export class ContactService{
+export class ContactService {
     constructor(
-        @InjectRepository(Contact) private contactRepository: Repository<Contact>,
+        @InjectRepository(Contact) private contactRepository: Repository<Contact>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<Contact>> {
         return paginate(query, this.contactRepository, {
-            sortableColumns: ['entityId','entityType','contact_person','position','mail','phone'],
-            defaultSortBy: [['id','ASC']],
-            searchableColumns: ['entityId','entityType','contact_person','position','mail','phone']
+            sortableColumns: ['entityId', 'entityType', 'contact_person', 'position', 'mail', 'phone'],
+            defaultSortBy: [['id', 'ASC']],
+            searchableColumns: ['entityId', 'entityType', 'contact_person', 'position', 'mail', 'phone']
         })
     }
 
@@ -28,11 +28,19 @@ export class ContactService{
     }
 
     async create(contactData: ContactDto): Promise<ContactDto> {
-        return await this.contactRepository.save(contactData);
+       try {
+            return await this.contactRepository.save(contactData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, contactData: ContactDto): Promise<UpdateResult> {
-        return await this.contactRepository.update(id, contactData);
+       try {
+            return await this.contactRepository.update(id, contactData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -49,4 +57,3 @@ export class ContactService{
 
 
 
-    

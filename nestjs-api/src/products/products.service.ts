@@ -9,7 +9,7 @@ import { Product } from "./products.entity";
 @Injectable()
 export class ProductService {
     constructor(
-        @InjectRepository(Product) private ProductRepository: Repository<Product>,
+        @InjectRepository(Product) private ProductRepository: Repository<Product>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<Product>> {

@@ -7,7 +7,7 @@ import { SubCategoryService } from "./sub-category.service";
 @Controller('subcategory')
 export class SubCategoryController {
   constructor(
-    private readonly subcategoryService: SubCategoryService,
+    private readonly subcategoryService: SubCategoryService
   ) { }
 
   @Get()

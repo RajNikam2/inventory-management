@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -7,15 +7,15 @@ import { Unit } from "./unit.entity";
 
 
 @Injectable()
-export class UnitService{
+export class UnitService {
     constructor(
-        @InjectRepository(Unit) private unitRepository: Repository<Unit>,
+        @InjectRepository(Unit) private unitRepository: Repository<Unit>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<Unit>> {
         return paginate(query, this.unitRepository, {
             sortableColumns: ['unit'],
-            defaultSortBy: [['id','ASC']],
+            defaultSortBy: [['id', 'ASC']],
             searchableColumns: ['unit'],
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
@@ -30,11 +30,19 @@ export class UnitService{
     }
 
     async create(unitData: UnitDto): Promise<UnitDto> {
-        return await this.unitRepository.save(unitData);
+        try{
+            return await this.unitRepository.save(unitData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, unitData: UnitDto): Promise<UpdateResult> {
-        return await this.unitRepository.update(id, unitData);
+        try{
+            return await this.unitRepository.update(id, unitData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -51,4 +59,3 @@ export class UnitService{
 
 
 
-    

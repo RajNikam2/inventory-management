@@ -7,7 +7,7 @@ import { ContactService } from "./contacts.service";
 @Controller('contact')
 export class ContactController {
   constructor(
-    private readonly contactService: ContactService,
+    private readonly contactService: ContactService
   ) { }
 
   @Get()

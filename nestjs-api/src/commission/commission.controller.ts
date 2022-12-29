@@ -7,7 +7,7 @@ import { CommissionService } from "./commission.service";
 @Controller('commission')
 export class CommissionController {
   constructor(
-    private readonly commissionService: CommissionService,
+    private readonly commissionService: CommissionService
   ) { }
 
   @Get()

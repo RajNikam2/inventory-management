@@ -7,7 +7,7 @@ import { DivisionService } from "./division.service";
 @Controller('division')
 export class DivisionController {
   constructor(
-    private readonly DivisionService: DivisionService,
+    private readonly DivisionService: DivisionService
   ) { }
 
   @Get()

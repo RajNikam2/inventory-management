@@ -7,7 +7,7 @@ import { TeamMemberService } from "./team-member.service";
 @Controller('teamMember')
 export class TeamMemberController {
   constructor(
-    private readonly TeamMemberService: TeamMemberService,
+    private readonly TeamMemberService: TeamMemberService
   ) { }
 
   @Get()

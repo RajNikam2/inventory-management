@@ -7,7 +7,7 @@ import { ShipmentByService } from "./shipment-by.service";
 @Controller('shipmentby')
 export class ShipmentByController {
   constructor(
-    private readonly shipmentbyService: ShipmentByService,
+    private readonly shipmentbyService: ShipmentByService
   ) { }
 
   @Get()

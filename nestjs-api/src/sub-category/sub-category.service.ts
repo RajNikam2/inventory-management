@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
@@ -7,7 +7,7 @@ import { SubCategory } from "./sub-category.entity";
 
 
 @Injectable()
-export class SubCategoryService{
+export class SubCategoryService {
     constructor(
         @InjectRepository(SubCategory) private subcategoryRepository: Repository<SubCategory>,
     ) { }
@@ -15,8 +15,8 @@ export class SubCategoryService{
     public listAll(query: PaginateQuery): Promise<Paginated<SubCategory>> {
         return paginate(query, this.subcategoryRepository, {
             sortableColumns: ['subCategory'],
-            relations:['category'],
-            defaultSortBy: [['id','ASC']],
+            relations: ['category'],
+            defaultSortBy: [['id', 'ASC']],
             searchableColumns: ['subCategory'],
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
@@ -31,11 +31,19 @@ export class SubCategoryService{
     }
 
     async create(subcategoryData: SubCategoryDto): Promise<SubCategoryDto> {
-        return await this.subcategoryRepository.save(subcategoryData);
+       try {
+            return await this.subcategoryRepository.save(subcategoryData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async update(id, subcategoryData: SubCategoryDto): Promise<UpdateResult> {
-        return await this.subcategoryRepository.update(id, subcategoryData);
+        try{
+            return await this.subcategoryRepository.update(id, subcategoryData);
+        }catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 
     async delete(id: any): Promise<DeleteResult> {
@@ -52,4 +60,3 @@ export class SubCategoryService{
 
 
 
-    
