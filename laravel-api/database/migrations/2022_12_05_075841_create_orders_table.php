@@ -25,12 +25,12 @@ class CreateOrdersTable extends Migration
             $table->string('po_number');
             $table->string('advance_payment');
             $table->string('advance_balance');
-            $table->integer('40_container');
-            $table->integer('20_container');
+            $table->integer('container40');
+            $table->integer('container20');
             $table->integer('pallets_skids');
             $table->string('others');
             $table->unsignedBigInteger('Team_members_id');
-            $table->foreign('Team_members_id')->references('id')->on('team_members');
+            $table->foreign('Team_members_id')->references('id')->on('TeamMembers');
             $table->unsignedBigInteger('division_id');
             $table->foreign('division_id')->references('id')->on('divisions');
             $table->unsignedBigInteger('country_id');

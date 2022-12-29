@@ -49,4 +49,14 @@ class ProductController extends Controller
             ->join('sub_categories', 'sub_categories.id', '=', 'products.sub_category_id')
             ->where('products.id', '=', $id)->get();
     }
+
+    function updateProduct(Request $req, $id)
+    {
+        $product = Product::find($id);
+        $product->description = isset($req->description) ? $req->description : null;
+        $product->category_id = $req->category_id;
+        $product->sub_category_id = $req->sub_category_id;
+        $product->update();
+        echo "success";
+    }
 }

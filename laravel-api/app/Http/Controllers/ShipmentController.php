@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class ShipmentController extends Controller
 {
 
-    private $searchSuppliersArray = array('suppliers.organization', 'suppliers.address', 'countries.country_name', 'types.type_name');
+    private $searchShipmentsArray = array('shipments.BL', 'shipments.ETA', 'shipments.invoice_number', 'shipments.invoice_amount', 'shipments.balance_due_date', 'shipments.commission_value', 'shipments.FOB', 'shipments.container_number');
     /**
      * Display a listing of the resource.
      *
@@ -39,14 +39,24 @@ class ShipmentController extends Controller
      */
     public function saveShipment(Request $req)
     {
-        $supplier = new Shipment();
-        $supplier->organization = $req->organization;
-        $supplier->address = $req->address;
-        $supplier->notes = $req->notes;
-        $supplier->country_id = $req->country_id;
-        $supplier->type_id = $req->type_id;
-        $supplier->save();
-        echo "success";
+        $shipment = new Shipment();
+        $shipment->sail_date = $req->sail_date;
+        $shipment->BL = $req->BL;
+        $shipment->ETA = $req->ETA;
+        $shipment->invoice_number = $req->invoice_number;
+        $shipment->invoice_amount = $req->invoice_amount;
+        $shipment->balance_due_date = $req->balance_due_date;
+        $shipment->FOB = $req->FOB;
+        $shipment->commission_value = $req->commission_value;
+        $shipment->container_number = $req->container_number;
+        $shipment->shipping_line_id = $req->shipping_line_id;
+        $shipment->port_of_loading_id = $req->port_of_loading_id;
+        $shipment->shipment_by_id = $req->shipment_by_id;
+        $shipment->destination_port_id = $req->destination_port_id;
+        $shipment->order_id = $req->order_id;
+        $shipment->save();
+
+        return $shipment;
     }
 
     /**
@@ -55,23 +65,28 @@ class ShipmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showSuppliers(Request $req)
+    public function getShipment(Request $req)
     {
         $requestParam = $req->all();
 
-        $query = DB::table('suppliers')
-            ->join('countries', 'countries.id', '=', 'suppliers.country_id')
-            ->join('types', 'types.id', '=', 'suppliers.type_id');
+        $query = DB::table('shipments')
+            ->join('shipping_lines', 'shipping_lines.id', '=', 'shipments.shipping_line_id')
+            ->join('port_of_loadings', 'port_of_loadings.id', '=', 'shipments.port_of_loading_id')
+            ->join('shipment_bies', 'shipment_bies.id', '=', 'shipments.shipment_by_id')
+            ->join('destination_ports', 'destination_ports.id', '=', 'shipments.destination_port_id')
+            ->join('orders', 'orders.id', '=', 'shipments.order_id');
+
+
         if (!empty($requestParam)) {
             // $query
 
-            foreach ($this->searchSuppliersArray as $f) {
+            foreach ($this->searchShipmentsArray as $f) {
                 $query->orWhere($f, 'like', "%" . $requestParam['q'] . "%");
             }
-        } else {
-            return $query->clone()->get();
         }
-        return $query->get();
+        // return $query->clone()->get();
+
+        return $query->cursorPaginate($requestParam['limit']);
     }
 
     /**
@@ -80,11 +95,14 @@ class ShipmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showSupplierById($id)
+    public function showShipmentById($id)
     {
-        $tm = Supplier::join('countries', 'countries.id', '=', 'suppliers.country_id')
-            ->join('types', 'types.id', '=', 'suppliers.type_id')
-            ->where('suppliers.id', '=', $id);
+        $tm = Shipment::join('shipping_lines', 'shipping_lines.id', '=', 'shipments.shipping_line_id')
+            ->join('port_of_loadings', 'port_of_loadings.id', '=', 'shipments.port_of_loading_id')
+            ->join('shipment_bies', 'shipment_bies.id', '=', 'shipments.shipment_by_id')
+            ->join('destination_ports', 'destination_ports.id', '=', 'shipments.destination_port_id')
+            ->join('orders', 'orders.id', '=', 'shipments.order_id')
+            ->where('shipments.id', '=', $id);
 
         return $tm->get();
     }
@@ -96,15 +114,24 @@ class ShipmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateSupplier(Request $req, $id)
+    public function updateShipment(Request $req, $id)
     {
-        $supplier = Supplier::find($id);
-        $supplier->organization = $req->organization;
-        $supplier->address = $req->address;
-        $supplier->notes = $req->notes;
-        $supplier->country_id = $req->country_id;
-        $supplier->type_id = $req->type_id;
-        $supplier->update();
+        $shipment = Shipment::find($id);
+        $shipment->sail_date = $req->sail_date;
+        $shipment->BL = $req->BL;
+        $shipment->ETA = $req->ETA;
+        $shipment->invoice_number = $req->invoice_number;
+        $shipment->invoice_amount = $req->invoice_amount;
+        $shipment->balance_due_date = $req->balance_due_date;
+        $shipment->FOB = $req->FOB;
+        $shipment->commission_value = $req->commission_value;
+        $shipment->container_number = $req->container_number;
+        $shipment->shipping_line_id = $req->shipping_line_id;
+        $shipment->port_of_loading_id = $req->port_of_loading_id;
+        $shipment->shipment_by_id = $req->shipment_by_id;
+        $shipment->destination_port_id = $req->destination_port_id;
+        $shipment->order_id = $req->order_id;
+        $shipment->update();
         echo "effected successfully";
     }
 
@@ -114,10 +141,10 @@ class ShipmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function deleteShipment($id)
     {
-        $supplier = Supplier::find($id);
-        $supplier->delete();
+        $shipment = Shipment::find($id);
+        $shipment->delete();
         echo "deleted successfully";
     }
 }

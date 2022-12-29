@@ -4,16 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Country;
 use App\Models\Customer;
+use App\Models\Order;
 use App\Models\TeamMember;
 use Attribute;
+use Illuminate\Database\Eloquent\HigherOrderBuilderProxy;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Schema\Builder;
+// use 
+
+
 
 
 class CustomerController extends Controller
 {
-    private $searchCustomerArray = array('types.type_name', 'countries.country_name', 'industries.industry_name', 'TeamMembers.first_name', 'customers.organization');
+    private $searchCustomerArray = array('customers.organization');
 
 
 
@@ -25,7 +32,7 @@ class CustomerController extends Controller
             'notes' => 'required | string',
             'country_id' => 'required | numeric',
             'industry_id' => 'required | numeric',
-            'type_id' => 'required | numeric'
+            // 'type_id' => 'required | numeric'
         ]);
 
         if ($validator->fails()) {
@@ -41,7 +48,7 @@ class CustomerController extends Controller
         $customer->country_id = $req->country_id;
         $customer->industry_id = $req->industry_id;
         $customer->type_id = $req->type_id;
-        $customer->team_member_id = $req->team_member_id;
+        // $customer->team_member_id = $req->team_member_id;
 
         $customer->save();
         echo "success";
@@ -49,27 +56,27 @@ class CustomerController extends Controller
 
     function showCustomers(Request $req)
     {
-        // private $searchCustomerArray = array( 'countries.country_name', 'TeamMembers.first_name');
-
         $requestParam = $req->all();
 
-        $query = DB::table('customers')
+
+        $query = Customer::filter($req)
+            ->select('customers.*', 'countries.country_name')
             ->join('countries', 'countries.id', '=', 'customers.country_id')
             ->join('industries', 'industries.id', '=', 'customers.industry_id')
             ->join('types', 'types.id', '=', 'customers.type_id')
             ->join('TeamMembers', 'TeamMembers.id', '=', 'customers.team_member_id');
 
-
         if (!empty($requestParam)) {
-            // $query
             foreach ($this->searchCustomerArray as $f) {
-                $query->orWhere($f, 'like', "%" . $requestParam['q'] . "%");
+                $query->Where($f, 'like', "%" . $requestParam['q'] . "%");
             }
-        } else {
-            return $query->clone()->get();
         }
-        return $query->orderBy('customers.id')->get();
+        $query->orderBy("{$requestParam['sortBy']}", "{$requestParam['sortOrder']}");
+        $result = $query->paginate($requestParam['limit']);
+        return $result;
+        // return $query->get();
     }
+
 
 
 
@@ -102,6 +109,7 @@ class CustomerController extends Controller
         $customer->update();
         echo "customer added";
     }
+    
     // function sortBy($ColumnName)
     // {
     //     if ($this->sortColumnName === $ColumnName) {
