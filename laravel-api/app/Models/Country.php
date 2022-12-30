@@ -27,7 +27,6 @@ class Country extends Model
 
     public function supplier()
     {
-        return $this->hasMany(Suppliers::class);
+        return $this->hasMany(Supplier::class);
     }
-    
 }

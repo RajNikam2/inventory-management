@@ -48,33 +48,33 @@ class CustomerController extends Controller
         $customer->country_id = $req->country_id;
         $customer->industry_id = $req->industry_id;
         $customer->type_id = $req->type_id;
-        // $customer->team_member_id = $req->team_member_id;
+        $customer->team_member_id = $req->team_member_id;
 
         $customer->save();
-        echo "success";
+        return $customer;
     }
 
     function showCustomers(Request $req)
     {
+
         $requestParam = $req->all();
 
 
-        $query = Customer::filter($req)
-            ->select('customers.*', 'countries.country_name')
+        $query = Customer::select('customers.*', 'countries.country_name')
             ->join('countries', 'countries.id', '=', 'customers.country_id')
             ->join('industries', 'industries.id', '=', 'customers.industry_id')
             ->join('types', 'types.id', '=', 'customers.type_id')
             ->join('TeamMembers', 'TeamMembers.id', '=', 'customers.team_member_id');
 
-        if (!empty($requestParam)) {
+        if (!empty($requestParam['q'])) {
             foreach ($this->searchCustomerArray as $f) {
-                $query->Where($f, 'like', "%" . $requestParam['q'] . "%");
+                $query->orWhere($f, 'like', "%" . $requestParam['q'] . "%");
             }
         }
+        $query->filter($req);
         $query->orderBy("{$requestParam['sortBy']}", "{$requestParam['sortOrder']}");
         $result = $query->paginate($requestParam['limit']);
         return $result;
-        // return $query->get();
     }
 
 
@@ -94,7 +94,7 @@ class CustomerController extends Controller
     {
         $customer = Customer::find($id);
         $customer->delete();
-        echo "deleted successfully";
+        return $customer;
     }
 
     function updateCustomer(Request $req, $id)
@@ -107,9 +107,9 @@ class CustomerController extends Controller
         $customer->industry_id = $req->industry_id;
         $customer->type_id = $req->type_id;
         $customer->update();
-        echo "customer added";
+        return $customer;
     }
-    
+
     // function sortBy($ColumnName)
     // {
     //     if ($this->sortColumnName === $ColumnName) {

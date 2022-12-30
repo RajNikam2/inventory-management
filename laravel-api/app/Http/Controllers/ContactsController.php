@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Division;
+use App\Models\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
 
-class DivisionController extends Controller
+class ContactsController extends Controller
 {
+    private $searchContactsArray = array('contacts.position', 'contacts.contact_person', 'contacts.contactable_type');
+
     /**
      * Display a listing of the resource.
      *
@@ -36,20 +37,15 @@ class DivisionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function saveDivision(Request $req)
+    public function saveContacts(Request $req)
     {
-        $validator = Validator::make($req->all(), [
-            'division_name' => 'required'
-        ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            return response()->json($errors);
-        }
-
-        $division = new Division();
-        $division->division_name = $req->division_name;
-        $division->save();
-        echo "successfully submitted";
+        $contacts = new Contact();
+        $contacts->contact_person = $req->contact_person;
+        $contacts->position = $req->position;
+        $contacts->contactable_id = $req->contactable_id;
+        $contacts->contactable_type = $req->contactable_type;
+        $contacts->save();
+        return $contacts;
     }
 
     /**
@@ -58,12 +54,15 @@ class DivisionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showDivision(Request $req)
+    public function getContacts(Request $req)
     {
         $requestParam = $req->all();
-        $query = DB::table('divisions');
+        $query = DB::table('contacts');
+
         if (!empty($requestParam)) {
-            $query->where('divisions.division_name', 'like', '%' . $requestParam['q'] . '%')->get();
+            foreach ($this->searchContactsArray as $f) {
+                $query->orWhere($f, 'like', "%" . $requestParam['q'] . "%");
+            }
         }
         $query->orderBy("{$requestParam['sortBy']}", "{$requestParam['sortOrder']}");
         $result = $query->paginate($requestParam['limit']);
@@ -76,10 +75,10 @@ class DivisionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showByIdDivision($id)
+    public function showContactsById($id)
     {
-        $division = Division::find($id);
-        return $division;
+        $contact = Contact::find($id);
+        return $contact;
     }
 
     /**
@@ -89,12 +88,15 @@ class DivisionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateDivision(Request $req, $id)
+    public function update(Request $req, $id)
     {
-        $division = Division::find($id);
-        $division->division_name = $req->division_name;
-        $division->update();
-        echo "affected successfully";
+        $contacts =  Contact::find($id);
+        $contacts->contact_person = $req->contact_person;
+        $contacts->position = $req->position;
+        $contacts->contactable_id = $req->contactable_id;
+        $contacts->contactable_type = $req->contactable_type;
+        $contacts->update();
+        return $contacts;
     }
 
     /**
@@ -105,8 +107,8 @@ class DivisionController extends Controller
      */
     public function destroy($id)
     {
-        $division = Division::find($id);
-        $division->delete();
+        $contact = Contact::find($id);
+        $contact->delete();
         echo "deleted successfully";
     }
 }

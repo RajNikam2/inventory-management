@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -21,11 +22,14 @@ class TypeController extends Controller
     function showType(Request $req)
     {
         $requestParam = $req->all();
+        $query=DB::table('types');
         if (!empty($requestParam)) {
             return Type::where('types.type_name', 'like', '%' . $requestParam['q'] . '%')->get();
-        } else {
-            return Type::all();
         }
+        $query->orderBy("{$requestParam['sortBy']}", "{$requestParam['sortOrder']}");
+        $result = $query->paginate($requestParam['limit']);
+        return $result;
+        
     }
 
     function showByIdType(Request $req, $id)

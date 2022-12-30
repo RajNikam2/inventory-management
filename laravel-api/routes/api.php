@@ -28,6 +28,7 @@ use  App\Http\Controllers\DestinationPortController;
 use  App\Http\Controllers\ShipmentController;
 use  App\Http\Controllers\DocumentsController;
 use  App\Http\Controllers\CommentsController;
+use  App\Http\Controllers\ContactsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -232,4 +233,10 @@ Route::group(['middleware' => 'cors'], function () {
     Route::get('orderProduct/{id}', [OrderProductController::class, 'showOrderProductById']);
     Route::patch('orderProduct/{id}', [OrderProductController::class, 'updateOrderProduct']);
     Route::delete('orderProduct/{id}', [OrderProductController::class, 'deleteOrderProduct']);
+
+    Route::get('contacts', [ContactsController::class, 'getContacts']);
+    Route::post('contacts', [ContactsController::class, 'saveContacts']);
+    Route::get('contacts/{id}', [ContactsController::class, 'showContactsById']);
+    Route::patch('contacts/{id}', [COntactsController::class, 'updateContacts']);
+    Route::delete('contacts/{id}', [ContactsController::class, 'deleteContacts']);
 });

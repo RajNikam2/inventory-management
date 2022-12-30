@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\DB;
 class TeamMembersController extends Controller
 {
     private $searchTeamMemberArray = array(
-        'TeamMembers.first_name', 'TeamMembers.last_name', 'TeamMembers.position',
-        'TeamMembers.assign_territories', 'countries.country_name'
+        'TeamMembers.first_name', 'TeamMembers.last_name'
     );
     /**
      * Display a listing of the resource.
@@ -63,16 +62,20 @@ class TeamMembersController extends Controller
     {
         $requestParam = $req->all();
 
-        $query = DB::table('TeamMembers')->join('countries', 'countries.id', '=', 'TeamMembers.country_id');
-        if (!empty($requestParam)) {
-            // $query
+
+        $query = TeamMember::select('TeamMembers.*', 'countries.country_name')
+            ->join('countries', 'countries.id', '=', 'TeamMembers.country_id');
+        // ->join('types', 'types.id', '=', 'TeamMembers.type_id');
+
+        if (!empty($requestParam['q'])) {
             foreach ($this->searchTeamMemberArray as $f) {
                 $query->orWhere($f, 'like', "%" . $requestParam['q'] . "%");
             }
-        } else {
-            return $query->clone()->get();
         }
-        return $query->get();
+        $query->filter($req);
+        $query->orderBy("{$requestParam['sortBy']}", "{$requestParam['sortOrder']}");
+        $result = $query->paginate($requestParam['limit']);
+        return $result;
     }
 
     /**

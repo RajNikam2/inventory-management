@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\Industry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -27,11 +28,14 @@ class IndustryController extends Controller
     function showIndustry(Request $req)
     {
         $requestParam = $req->all();
+        $query = DB::table('industries');
+
         if (!empty($requestParam)) {
-            return Industry::where('industries.industry_name', 'like', '%' . $requestParam['q'] . '%')->get();
-        } else {
-            return Industry::all();
+            $query->where('industries.industry_name', 'like', '%' . $requestParam['q'] . '%');
         }
+        $query->orderBy("{$requestParam['sortBy']}", "{$requestParam['sortOrder']}");
+        $result = $query->paginate($requestParam['limit']);
+        return $result;
         // return $industry->get();
     }
 

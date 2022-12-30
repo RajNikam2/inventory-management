@@ -4,19 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Suppliers;
+use App\Models\Supplier;
 
-class Contacts extends Model
+class Contact extends Model
 {
     use HasFactory;
-    // function customers()
-    // {
-    //     return $this->belongsTo(customers::class);
-    // }
-    // function supplier()
-    // {
-    //     return $this->belongsTo(Suppliers::class);
-    // }
     function contactable()
     {
         return $this->morphTo();

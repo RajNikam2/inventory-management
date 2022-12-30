@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class SuppliersController extends Controller
 {
-    private $searchSuppliersArray = array('suppliers.organization', 'suppliers.address', 'countries.country_name', 'types.type_name');
+    private $searchSuppliersArray = array('suppliers.organization', 'suppliers.address',);
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +45,7 @@ class SuppliersController extends Controller
         $supplier->country_id = $req->country_id;
         $supplier->type_id = $req->type_id;
         $supplier->save();
-        echo "success";
+        return $supplier;
     }
 
     /**
@@ -56,21 +56,41 @@ class SuppliersController extends Controller
      */
     public function showSuppliers(Request $req)
     {
+
         $requestParam = $req->all();
 
-        $query = DB::table('suppliers')
+
+        $query = Supplier::select('suppliers.*', 'countries.country_name')
             ->join('countries', 'countries.id', '=', 'suppliers.country_id')
             ->join('types', 'types.id', '=', 'suppliers.type_id');
-        if (!empty($requestParam)) {
-            // $query
 
+        if (!empty($requestParam['q'])) {
             foreach ($this->searchSuppliersArray as $f) {
                 $query->orWhere($f, 'like', "%" . $requestParam['q'] . "%");
             }
-        } else {
-            return $query->clone()->get();
         }
-        return $query->get();
+        $query->filter($req);
+        $query->orderBy("{$requestParam['sortBy']}", "{$requestParam['sortOrder']}");
+        $result = $query->paginate($requestParam['limit']);
+        return $result;
+        
+        // $requestParam = $req->all();
+        // $query = Supplier::select('suppliers.*')
+        //     ->join('countries', 'countries.id', '=', 'suppliers.country_id')
+        //     ->join('types', 'types.id', '=', 'suppliers.type_id');
+
+        // if (isset($requestParam['country_id']) && !empty($requestParam['country_id'])) {
+        //     $query->where('suppliers.country_id', $requestParam['country_id']);
+        // }
+        // if (!empty($requestParam['q'])) {
+        //     foreach ($this->searchSuppliersArray as $f) {
+        //         $query->orWhere($f, 'like', "%" . $requestParam['q'] . "%");
+        //     }
+        // }
+
+        // $query->orderBy("{$requestParam['sortBy']}", "{$requestParam['sortOrder']}");
+        // $result = $query->paginate($requestParam['limit']);
+        // return $result;
     }
 
     /**

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filters\TeamMemberAbstractFilter;
 
 class TeamMember extends Model
 {
@@ -21,5 +23,9 @@ class TeamMember extends Model
     function customer()
     {
         return $this->hasMany(Customer::class);
+    }
+    public function scopeFilter(Builder $builder, $request)
+    {
+        return (new TeamMemberAbstractFilter($request))->filter($builder);
     }
 }

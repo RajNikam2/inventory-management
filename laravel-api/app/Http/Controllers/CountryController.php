@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Country;
 use Illuminate\Support\Facades\Validator;
@@ -25,7 +26,7 @@ class CountryController extends Controller
         $country->country_name = $req->country_name;
 
         $country->save();
-        echo "successfully submitted";
+        return $country;
     }
 
     function showByIdCountry(Request $req, $id)
@@ -36,18 +37,21 @@ class CountryController extends Controller
     function showCountry(Request $req)
     {
         $requestParam = $req->all();
+        $query = DB::table('countries');
+
         if (!empty($requestParam)) {
-            return Country::where('countries.country_name', 'like', '%' . $requestParam['q'] . '%')->get();
-        } else {
-            return Country::all();
+            $query->where('countries.country_name', 'like', '%' . $requestParam['q'] . '%');
         }
+        $query->orderBy("{$requestParam['sortBy']}", "{$requestParam['sortOrder']}");
+        $result = $query->paginate($requestParam['limit']);
+        return $result;
     }
 
     function deleteCountry(Request $req, $id)
     {
         $country = Country::find($id);
         $country->delete();
-        echo "deleted successfully";
+        return $country;
     }
 
     function updateCountry(Request $req, $id)
@@ -56,6 +60,6 @@ class CountryController extends Controller
         $country = Country::find($id);
         $country->country_name = $req->country_name;
         $country->update();
-        echo "affected successfully";
+        return $country;
     }
 }
