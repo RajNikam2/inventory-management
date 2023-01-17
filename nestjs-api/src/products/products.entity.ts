@@ -30,7 +30,7 @@ export class Product{
 
     @OneToMany(() => OrderItem, (orderItem) => orderItem.product, {
         eager: true,
-        cascade: true
+        cascade: false
     })
     orderItem?: OrderItem[];
 

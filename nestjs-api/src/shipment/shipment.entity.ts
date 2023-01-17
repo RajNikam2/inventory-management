@@ -60,11 +60,11 @@ export class Shipment{
 
     @ManyToOne(() => PortOfLoading, (portOfLoding) => portOfLoding.shipment)
     @JoinColumn({ name: 'portOfLoadingId' })
-    portOfLoding: PortOfLoading;
+    portOfLoading: PortOfLoading;
 
     @OneToMany(() => Document, (docment) => docment.shipment, {
         eager: true,
-        cascade: true
+        cascade: false
     })
     document?: Document[];
 

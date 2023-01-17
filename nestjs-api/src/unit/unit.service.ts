@@ -7,16 +7,16 @@ import { Unit } from "./unit.entity";
 
 
 @Injectable()
-export class UnitService {
+export class UnitService{
     constructor(
         @InjectRepository(Unit) private unitRepository: Repository<Unit>
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<Unit>> {
         return paginate(query, this.unitRepository, {
-            sortableColumns: ['unit'],
+            sortableColumns: ['name'],
             defaultSortBy: [['id', 'ASC']],
-            searchableColumns: ['unit'],
+            searchableColumns: ['name'],
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
             // }

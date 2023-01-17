@@ -1,10 +1,9 @@
-import { IsEmail, IsNotEmpty, MaxLength, MinLength } from "class-validator"
 import { Contact } from "src/contacts/contacts.entity";
 import { Country } from "src/country/country.entity";
 import { Order } from "src/orders/orders.entity";
+import { Type } from "src/type/type.entity";
 import { Url } from "src/urls/urls.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
-import { PolymorphicChildren } from "typeorm-polymorphic";
 
 @Entity({ name: 'suppliers' })
 export class Supplier {
@@ -16,23 +15,30 @@ export class Supplier {
     organization: string;
 
     @Column()
-    supplier_type: string;
-
-    @Column()
     address: string;
 
     @Column()
     notes: string;
 
-
-    @PolymorphicChildren(() => Contact, {
-        eager: false,
+    @OneToMany(() => Url, (url) => url.supplier,{
+        eager: true, 
+        cascade: true  
     })
-    contact: Contact[];
+    urls?: Url[];
+
+    @OneToMany(() => Contact, (contact) => contact.supplier,{
+        eager: true, 
+        cascade: true  
+    })
+    contacts?: Contact[];
 
     @ManyToOne(() => Country, (country) => country.supplier)
-    @JoinColumn({ name: 'countryid' })
+    @JoinColumn({ name: 'countryId' })
     country: Country;
+
+    @ManyToOne(() => Type, (type) => type.supplier)
+    @JoinColumn({ name: 'typeId' })
+    type: Type;
 
     @OneToMany(() => Order, (order) => order.supplier, {
         eager: true,

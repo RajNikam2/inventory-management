@@ -15,9 +15,9 @@ export class ContactService {
 
     public listAll(query: PaginateQuery): Promise<Paginated<Contact>> {
         return paginate(query, this.contactRepository, {
-            sortableColumns: ['entityId', 'entityType', 'contact_person', 'position', 'mail', 'phone'],
+            sortableColumns: ['entityType', 'contact_person', 'position', 'mail', 'phone'],
             defaultSortBy: [['id', 'ASC']],
-            searchableColumns: ['entityId', 'entityType', 'contact_person', 'position', 'mail', 'phone']
+            searchableColumns: ['entityType', 'contact_person', 'position', 'mail', 'phone']
         })
     }
 

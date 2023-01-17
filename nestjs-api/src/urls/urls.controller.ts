@@ -10,7 +10,7 @@ export class UrlController {
     private readonly urlService: UrlService
   ) { }
 
-  @Get('')
+  @Get()
   public listAll(@Paginate() query: PaginateQuery): Promise<Paginated<Url>> {
     return this.urlService.listAll(query);
   }
@@ -22,8 +22,6 @@ export class UrlController {
 
   @Post('create')
   async create(@Body() urlData: UrlDto): Promise<any> {
-    console.log("in create");
-
     return this.urlService.create(urlData);
   }
 

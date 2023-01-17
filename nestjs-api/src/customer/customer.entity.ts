@@ -1,12 +1,13 @@
-import { Contact} from "src/contacts/contacts.entity";
+import { Contact } from "src/contacts/contacts.entity";
 import { Order } from "src/orders/orders.entity";
 import { Country } from "src/country/country.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
-import { PolymorphicChildren } from "typeorm-polymorphic";
 import { Industry } from "src/industry/industry.entity";
+import { Type } from "src/type/type.entity";
+import { Url } from "src/urls/urls.entity";
 
 @Entity({ name: 'customers' })
-export class Customer{
+export class Customer {
 
     @PrimaryGeneratedColumn('uuid')
     id: number;
@@ -17,17 +18,21 @@ export class Customer{
     @Column()
     address: string;
 
-    @Column({ type: "enum", enum: ["new","exiting"], default: null })
-    customer_type: string;
-
     @Column()
     notes: string;
 
-    @PolymorphicChildren(() => Contact, {
-        eager: false,
+    @OneToMany(() => Url, (urls) => urls.customer,{
+        eager: true, 
+        cascade: true
     })
-    contact: Contact[];
+    urls?:Url[]
 
+    @OneToMany(() => Contact, (contact) => contact.customer,{
+        eager: true, 
+        cascade: true
+    })
+    contacts?:Contact[]
+    
     @ManyToOne(() => Country, (country) => country.customer)
     @JoinColumn({ name: 'countryId' })
     country: Country;
@@ -35,6 +40,10 @@ export class Customer{
     @ManyToOne(() => Industry, (industry) => industry.customer)
     @JoinColumn({ name: 'industryId' })
     industry: Industry;
+
+    @ManyToOne(() => Type, (type) => type.customer)
+    @JoinColumn({ name: 'typeId' })
+    type: Type;
 
     @OneToMany(() => Order, (order) => order.customer, {
         eager: true,

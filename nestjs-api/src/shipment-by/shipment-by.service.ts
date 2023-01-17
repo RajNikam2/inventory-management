@@ -14,9 +14,9 @@ export class ShipmentByService {
 
     public listAll(query: PaginateQuery): Promise<Paginated<ShipmentBy>> {
         return paginate(query, this.shipmentbyRepository, {
-            sortableColumns: ['shipment_by'],
+            sortableColumns: ['name'],
             defaultSortBy: [['id', 'ASC']],
-            searchableColumns: ['shipment_by'],
+            searchableColumns: ['name'],
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
             // }

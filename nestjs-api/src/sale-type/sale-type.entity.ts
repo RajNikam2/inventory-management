@@ -13,7 +13,7 @@ export class SaleType{
 
     @OneToMany(() => Order, (order) => order.saletype, {
         eager: true,
-        cascade: true
+        cascade: false
     })
     order?: Order[];
 

@@ -12,7 +12,7 @@ export class DeliveryTerm{
 
     @OneToMany(() => Order, (order) => order.deliveryTerm, {
         eager: true,
-        cascade: true
+        cascade: false
     })
     order?: Order[];
 

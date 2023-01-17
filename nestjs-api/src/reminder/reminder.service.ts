@@ -14,10 +14,10 @@ export class ReminderService {
 
     public listAll(query: PaginateQuery): Promise<Paginated<Reminder>> {
         return paginate(query, this.reminderRepository, {
-            sortableColumns: ['reminder', 'action'],
+            sortableColumns: ['name', 'action'],
             // relations: ['or'],
             defaultSortBy: [['id', 'ASC']],
-            searchableColumns: ['reminder', 'action'],
+            searchableColumns: ['name', 'action'],
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
             // }

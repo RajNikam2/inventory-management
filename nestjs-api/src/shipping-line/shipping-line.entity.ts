@@ -8,11 +8,11 @@ export class ShippingLine{
     id: number;
 
     @Column()
-    shipping_line: string;
+    name: string;
 
     @OneToMany(() => Shipment, (shipment) => shipment.shppingLine,{
         eager: true, 
-        cascade: true  
+        cascade: false  
     })
     shipment?: Shipment[];
 

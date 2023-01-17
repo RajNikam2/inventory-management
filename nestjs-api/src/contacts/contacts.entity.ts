@@ -1,24 +1,15 @@
 import { IsEmail, IsNotEmpty } from "class-validator";
 import { Customer } from "src/customer/customer.entity";
 import { Supplier } from "src/suppliers/suppliers.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { PolymorphicParent } from "typeorm-polymorphic";
 import { PolymorphicChildInterface } from "typeorm-polymorphic/dist/polymorphic.interface";
 
 @Entity({ name: 'contacts' })
-export class Contact implements PolymorphicChildInterface {
+export class Contact{
     
     @PrimaryGeneratedColumn("uuid")
     id: number;
-
-    @PolymorphicParent(() => [Customer, Supplier])
-    owner: Customer | Supplier;
-
-    @Column()
-    entityId: number;
-
-    @Column()
-    entityType: string;
 
     @Column()
     contact_person: string;
@@ -31,6 +22,17 @@ export class Contact implements PolymorphicChildInterface {
 
     @Column({ type: "varchar", length: 10, name: "phone", unique: true })
     phone: number;
+
+    @Column()
+    entityType:string;
+    
+    @ManyToOne(() => Customer, (customer) => customer.contacts)
+    @JoinColumn({ name: 'customerId' })
+    customer: Customer;
+
+    @ManyToOne(() => Customer, (customer) => customer.contacts)
+    @JoinColumn({ name: 'supplierId' })
+    supplier: Supplier;
 
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date;

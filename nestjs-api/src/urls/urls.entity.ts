@@ -1,26 +1,26 @@
 import { Customer } from "src/customer/customer.entity";
 import { Supplier } from "src/suppliers/suppliers.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { PolymorphicParent } from "typeorm-polymorphic";
-import { PolymorphicChildInterface } from "typeorm-polymorphic/dist/polymorphic.interface";
 
-@Entity({name:'urls'})
-export class Url implements PolymorphicChildInterface {
-    
+@Entity({ name: 'urls' })
+export class Url {
+
     @PrimaryGeneratedColumn('uuid')
-    id:number;
+    id: number;
 
-    @PolymorphicParent(() => [Customer, Supplier])
-    owner: Customer| Supplier;
-
-    @Column()
-    entityId: number;
-    
     @Column()
     entityType: string;
 
     @Column()
-    url:string;
+    url: string
+
+    @ManyToOne(() => Customer, (customer) => customer.urls)
+    @JoinColumn({ name: 'customerId' })
+    customer: Customer;
+
+    @ManyToOne(() => Supplier, (supplier) => supplier.urls)
+    @JoinColumn({ name: 'supplierId' })
+    supplier:Supplier;
 
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date;
@@ -30,5 +30,11 @@ export class Url implements PolymorphicChildInterface {
 
     @DeleteDateColumn({ name: "deleted_at" })
     deletedAt: Date;
-    
 }
+
+
+
+
+
+
+

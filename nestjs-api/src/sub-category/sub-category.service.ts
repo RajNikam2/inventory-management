@@ -14,10 +14,10 @@ export class SubCategoryService {
 
     public listAll(query: PaginateQuery): Promise<Paginated<SubCategory>> {
         return paginate(query, this.subcategoryRepository, {
-            sortableColumns: ['subCategory'],
+            sortableColumns: ['name'],
             relations: ['category'],
             defaultSortBy: [['id', 'ASC']],
-            searchableColumns: ['subCategory'],
+            searchableColumns: ['name']
             // filterableColumns: {
             //     address: [FilterOperator.GTE, FilterOperator.LTE],
             // }
@@ -26,7 +26,8 @@ export class SubCategoryService {
 
     async listSubCategoryById(id: any) {
         return this.subcategoryRepository.findOne({
-            where: { id: id }
+            where: { id: id },
+            
         });
     }
 

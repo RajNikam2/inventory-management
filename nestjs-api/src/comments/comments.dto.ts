@@ -5,7 +5,7 @@ export class CommentDto {
 
     @IsNotEmpty()
     @IsString()
-    comments: string;
+    comment: string;
 
     @IsNotEmpty()
     action: string;

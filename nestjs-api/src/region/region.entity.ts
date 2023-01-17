@@ -14,7 +14,7 @@ export class Region{
 
     @OneToMany(() => Order, (order) => order.region,{
         eager: true, 
-        cascade: true 
+        cascade: false 
     })
     order?: Order[];
 

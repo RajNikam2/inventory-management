@@ -14,10 +14,10 @@ export class DocumentService {
 
     public listAll(query: PaginateQuery): Promise<Paginated<Document>> {
         return paginate(query, this.documentRepository, {
-            sortableColumns: ['courier_service','tracking_referance','send_date','send_to','recieved_by','documentId','date','comments'],
+            sortableColumns: ['courier_service','tracking_referance','send_date','send_to','recieved_by','doc_id','date','comments'],
             relations: [/* 'order' */,'shipment'],
             defaultSortBy: [['id', 'ASC',]],
-            searchableColumns: ['courier_service','tracking_referance','send_date','send_to','recieved_by','documentId','date','comments'],
+            searchableColumns: ['courier_service','tracking_referance','send_date','send_to','recieved_by','doc_id','date','comments'],
             // filterableColumns: {
             // 'order.id':[FilterOperator.EQ],
             // 'shipment.id':[FilterOperator.EQ]

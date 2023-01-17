@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { FilterOperator, paginate, Paginated, PaginateQuery } from "nestjs-paginate";
+import { paginate, Paginated, PaginateQuery } from "nestjs-paginate";
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
 import { UrlDto } from "./urls.dto";
 import { Url } from "./urls.entity";
@@ -8,21 +8,23 @@ import { Url } from "./urls.entity";
 
 @Injectable()
 export class UrlService {
+    save: any;
     constructor(
         @InjectRepository(Url) private urlRepository: Repository<Url>,
     ) { }
 
     public listAll(query: PaginateQuery): Promise<Paginated<Url>> {
         return paginate(query, this.urlRepository, {
-            sortableColumns: ['entityType', 'url', 'entityId'],
-            relations: [],
+            sortableColumns: ['url'],
+            // relations: ['customer','supplier'],
             defaultSortBy: [['id', 'DESC']],
-            searchableColumns: ['entityType', 'url', 'entityId'],
+            searchableColumns: ['url'],
             // filterableColumns: {
-            //     address: [FilterOperator.GTE, FilterOperator.LTE],
+            //     entityType: [FilterOperator.GTE, FilterOperator.LTE],
             // }
         })
     }
+
 
     async listUrlById(id: any) {
         return this.urlRepository.findOne({
@@ -30,18 +32,18 @@ export class UrlService {
         });
     }
 
-    async create(urlData: UrlDto): Promise<UrlDto> {
-      try {
+    async create(urlData: UrlDto): Promise<any> {
+        try {
             return await this.urlRepository.save(urlData);
-        }catch (err) {
+        } catch (err) {
             throw new BadRequestException(err.message);
         }
     }
 
     async update(id, urlData: UrlDto): Promise<UpdateResult> {
-       try {
+        try {
             return await this.urlRepository.update(id, urlData);
-        }catch (err) {
+        } catch (err) {
             throw new BadRequestException(err.message);
         }
     }
@@ -52,11 +54,8 @@ export class UrlService {
             throw new NotFoundException(id);
         }
         return deleteResponse;
-    }
+    }    
 
 }
-
-
-
 
 

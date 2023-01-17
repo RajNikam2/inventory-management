@@ -14,7 +14,7 @@ export class DeliveryTime{
 
     @OneToMany(() => Order, (order) => order.deliveryTime, {
         eager: true,
-        cascade: true
+        cascade: false
     })
     order?: Order[];
 

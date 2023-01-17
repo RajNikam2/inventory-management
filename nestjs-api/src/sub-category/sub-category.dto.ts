@@ -4,7 +4,8 @@ import { Category } from "src/category/category.entity";
 export class SubCategoryDto{
 
     @IsNotEmpty()
-    subCategory:string;
+    name:string;
+    
     category: Category;
 
 }

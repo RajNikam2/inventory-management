@@ -13,16 +13,15 @@ export class Category{
 
     @OneToMany(() => SubCategory,(subCategory) => subCategory.category,{
         eager: true,
-        cascade: true
+        cascade: false
     })
     subCategory?: SubCategory[];
 
     @OneToMany(() => Product,(product) => product.category,{
         eager: true,
-        cascade: true
+        cascade: false
     })
     product?: Product[];
-
 
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date;

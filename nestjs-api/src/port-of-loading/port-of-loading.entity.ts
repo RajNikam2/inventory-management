@@ -10,9 +10,9 @@ export class PortOfLoading{
     @Column()
     loading_port: string;
 
-    @OneToMany(() => Shipment, (shipment) => shipment.portOfLoding, {
+    @OneToMany(() => Shipment, (shipment) => shipment.portOfLoading, {
         eager: true,
-        cascade: true
+        cascade: false
     })
     shipment?: Shipment[];
 

@@ -14,34 +14,45 @@ export class TeamMemberService {
 
     public listAll(query: PaginateQuery): Promise<Paginated<TeamMember>> {
         return paginate(query, this.teamMemberRepository, {
-            sortableColumns: ['last_name', 'first_name', 'position', 'assigned_territories'],
+            sortableColumns: ['last_name', 'first_name', 'position', 'assigned_territories', 'country', 'notes',],
             relations: ['country'],
-            defaultSortBy: [['id', 'ASC',]],
-            searchableColumns: ['last_name', 'first_name', 'position', 'assigned_territories'],
+            defaultSortBy: [['id', 'ASC'], ['last_name', 'ASC'], ['first_name', 'ASC'],
+            ['country', 'ASC'],],
+            searchableColumns: ['last_name', 'first_name', 'position', 'assigned_territories', 'country','notes','createdAt','updatedAt'],
             filterableColumns: {
-                'country.id': [FilterOperator.EQ]
+                'country.name': [FilterOperator.EQ]
             }
         })
     }
 
+    async findByUserName({ username }: any): Promise<TeamMemberDto> {
+        return await this.teamMemberRepository.findOne({
+            where: { username }
+        });
+    }
+
     async listTeamMemberById(id: any) {
         return this.teamMemberRepository.findOne({
-            where: { id: id }
+            where: { id: id },
+            relations: [
+                'Country'
+            ]
+
         });
     }
 
     async create(teamMemberData: TeamMemberDto): Promise<TeamMemberDto> {
-        try{
+        try {
             return await this.teamMemberRepository.save(teamMemberData);
-        }catch (err) {
+        } catch (err) {
             throw new BadRequestException(err.message);
         }
     }
 
     async update(id, teamMemberData: TeamMemberDto): Promise<UpdateResult> {
-       try{
+        try {
             return await this.teamMemberRepository.update(id, teamMemberData);
-        }catch (err) {
+        } catch (err) {
             throw new BadRequestException(err.message);
         }
     }

@@ -32,17 +32,23 @@ import { ShipmentByModule } from './shipment-by/shipment-by.module';
 import { UrlModule } from './urls/urls.module';
 import { ComplaintModule } from './complaint/complaint.module';
 import { CountryModule } from './country/country.module';
+import { DatabaseConfiguration } from './db-config/database.configuration';
+import { ConfigModule } from '@nestjs/config';
+import { TypeModule } from './type/type.module';
+import { AuthModule } from './auth/auth.module';
+
+console.log(process.env.NODE_ENV);
 @Module({
-  imports: [TypeOrmModule.forRoot({
-    type: "mysql",
-    host: "localhost",
-    port: 3306,
-    username: "root",
-    // password:'',
-    database: 'inventory_management_db',
-    entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    synchronize: true,
-  }), CustomerModule, SuppliersModule, TeamMemberModule, IndustryModule, ContactsModule, OrderModule, DivisionModule, RegionModule, SaleTypeModule, CategoryModule, SubCategoryModule, CommentsModule, FilesModule, ProductsModule, ShipmentModule, PaymentModule, CommissionModule, DocumentsModule, PaymentTermModule, DeliveryTimeModule, DeliveryTermModule, ReminderModule, OrderItemModule, ShippingLineModule, PortOfLoadingModule, DestinationPortModule, ShipmentByModule, UrlModule, ComplaintModule, CountryModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.${process.env.NODE_ENV}.env`
+    }),
+    TypeOrmModule.forRootAsync({
+        useClass: DatabaseConfiguration
+    }),
+    CustomerModule, SuppliersModule, TeamMemberModule, IndustryModule, ContactsModule, OrderModule, DivisionModule, RegionModule, SaleTypeModule, CategoryModule, SubCategoryModule, CommentsModule, FilesModule, ProductsModule, ShipmentModule, PaymentModule, CommissionModule, DocumentsModule, PaymentTermModule, DeliveryTimeModule, DeliveryTermModule, ReminderModule, OrderItemModule, ShippingLineModule, PortOfLoadingModule, DestinationPortModule, ShipmentByModule, UrlModule, ComplaintModule, CountryModule, TypeModule, AuthModule
+],
   controllers: [AppController],
   providers: [AppService],
 })

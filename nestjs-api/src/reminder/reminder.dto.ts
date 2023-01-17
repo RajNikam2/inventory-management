@@ -4,11 +4,11 @@ import { Order } from "src/orders/orders.entity";
 export class ReminderDto{
 
     @IsNotEmpty()
-    reminder:string;
+    name:string;
 
     @IsNotEmpty()
     action:string;
     
-    // order: Order;
+    order: Order;
 
 }

@@ -1,14 +1,14 @@
 import { IsNotEmpty, IsString } from "class-validator";
+import { type } from "os";
 import { Country } from "src/country/country.entity";
+import { Type } from "src/type/type.entity";
+import { Url } from "src/urls/urls.entity";
 
-export class sulpplierDto {
+export class SulpplierDto {
     
     @IsNotEmpty()
     @IsString()
     organization: string;
-
-    @IsNotEmpty()
-    supplier_type:string;
 
     @IsNotEmpty()
     address: string;
@@ -17,5 +17,7 @@ export class sulpplierDto {
     notes:string;
     
     country: Country;
+    type:Type;
 
+    urls: Url[];
 }

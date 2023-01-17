@@ -13,7 +13,7 @@ export class Division{
 
     @OneToMany(() => Order, (order) => order.division,{
         eager: true, 
-        cascade: true  
+        cascade: false  
     })
     order?: Order[];
 

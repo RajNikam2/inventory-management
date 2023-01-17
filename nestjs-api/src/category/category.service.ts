@@ -15,7 +15,7 @@ export class CategoryService {
     public listAll(query: PaginateQuery): Promise<Paginated<Category>> {
         return paginate(query, this.categoryRepository, {
             sortableColumns: ['name'],
-            defaultSortBy: [['id', 'ASC']],
+            defaultSortBy: [['id','ASC']],
             searchableColumns: ['name']
         })
     }

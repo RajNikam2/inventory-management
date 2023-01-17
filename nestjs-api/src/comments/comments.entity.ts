@@ -2,13 +2,13 @@ import { Order } from "src/orders/orders.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'comments' })
-export class Comment {
+export class Comment{
 
     @PrimaryGeneratedColumn('uuid')
     id: number;
 
     @Column()
-    comments: string;
+    comment: string;
 
     @Column({ type: "enum", enum: ["edit", "cancel"], default: null })
     action: string;

@@ -14,7 +14,7 @@ export class CommentService {
 
     public listAll(query: PaginateQuery): Promise<Paginated<Comment>> {
         return paginate(query, this.commentRepository, {
-            sortableColumns: ['comments'],
+            sortableColumns: ['comment'],
             relations: ['order'],
             defaultSortBy: [['id','ASC']],
             searchableColumns: ['action'],

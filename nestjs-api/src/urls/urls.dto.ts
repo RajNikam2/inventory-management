@@ -1,14 +1,15 @@
 import { IsNotEmpty } from "class-validator";
+import { Column } from "typeorm";
 
-export class UrlDto{
+export class UrlDto {
+
+    @Column()
+    entityType: string
+
+    @Column()
+    entityTypeId: string
 
     @IsNotEmpty()
-    entityId: number;
-
-    @IsNotEmpty()
-    entityType: string;
-
-    @IsNotEmpty()
-    url:string;
+    url: string;
 
 }

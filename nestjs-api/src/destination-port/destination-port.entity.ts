@@ -12,7 +12,7 @@ export class DestinationPort{
 
     @OneToMany(() => Shipment, (shipment) => shipment.destinationPort,{
         eager: true, 
-        cascade: true  
+        cascade: false  
     })
     shipment?: Shipment[];
 

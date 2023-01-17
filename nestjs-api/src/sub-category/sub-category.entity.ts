@@ -1,5 +1,4 @@
 import { Category } from "src/category/category.entity";
-import { OrderItem } from "src/order-item/order-item.entity";
 import { Product } from "src/products/products.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -10,7 +9,7 @@ export class SubCategory{
     id:number;
 
     @Column()
-    subCategory:string;
+    name:string;
 
     @ManyToOne(() => Category, (category) => category.subCategory)
     @JoinColumn({ name: 'categoryId' })
@@ -18,7 +17,7 @@ export class SubCategory{
 
     @OneToMany(() => Product,(product) => product.subcategory,{
         eager: true,
-        cascade: true
+        cascade: false
     })
     product?: Product[];
 

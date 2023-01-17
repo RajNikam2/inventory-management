@@ -7,7 +7,7 @@ export class Unit{
     id:number;
 
     @Column()
-    unit:string;
+    name:string;
 
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date;

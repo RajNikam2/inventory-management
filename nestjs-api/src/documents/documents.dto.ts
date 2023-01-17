@@ -20,7 +20,7 @@ export class DocumentDto{
     recieved_by:string;
     
     @IsNotEmpty()
-    documentId:number;
+    doc_id:number;
 
     @IsNotEmpty()
     date:Date; 

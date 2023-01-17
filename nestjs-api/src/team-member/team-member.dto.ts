@@ -1,7 +1,8 @@
 import { IsAlpha, IsNotEmpty, IsString } from "class-validator";
 import { Country } from "src/country/country.entity";
+import { Column } from "typeorm";
 
-export class TeamMemberDto{
+export class TeamMemberDto {
 
     @IsNotEmpty()
     @IsString()
@@ -11,21 +12,26 @@ export class TeamMemberDto{
     @IsNotEmpty()
     @IsString()
     @IsAlpha()
-    last_name: string; 
+    last_name: string;
 
     @IsNotEmpty()
     @IsString()
-    @IsAlpha()
-    position:string;
+    // @IsAlpha()
+    position: string;
 
     @IsNotEmpty()
     @IsString()
-    assigned_territories: string; 
+    assigned_territories: string;
 
     @IsNotEmpty()
     @IsString()
     notes: string;
 
-    // @IsNotEmpty()
+    @Column({ type: 'varchar', nullable: false, unique: true})
+    username: string;
+    
+    @Column({ type: 'varchar', nullable: false }) 
+    password: string;  
+
     country: Country;
 }

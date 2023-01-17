@@ -15,7 +15,7 @@ export class ShipmentService {
     public listAll(query: PaginateQuery): Promise<Paginated<Shipment>> {
         return paginate(query, this.shipmentRepository, {
             sortableColumns: ['bl', 'eta', 'invoice_number', 'invoice_amount', 'balance_due_date', 'ex_work_value', 'commission_value', 'container_number'],
-            relations: [/* 'order' */, 'portOfLoding', 'destinationPort', 'shipmentBy', 'shppingLine'],
+            relations: [/* 'order' */, 'portOfLoading', 'destinationPort', 'shipmentBy', 'shppingLine'],
             defaultSortBy: [['id', 'ASC']],
             searchableColumns: ['bl', 'eta', 'invoice_number', 'invoice_amount', 'balance_due_date', 'ex_work_value', 'commission_value', 'container_number'],
             // filterableColumns: {

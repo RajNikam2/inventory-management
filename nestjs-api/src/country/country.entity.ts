@@ -15,25 +15,25 @@ export class Country{
 
     @OneToMany(() => Customer, (customer) => customer.country, {
         eager: true,
-        cascade: true
+        cascade: false
     })
     customer?: Customer[];
 
     @OneToMany(() => Order, (order) => order.country, {
         eager: true,
-        cascade: true
+        cascade: false
     })
     order?: Order[];
 
     @OneToMany(() => Supplier, (supplier) => supplier.country, {
         eager: true,
-        cascade: true
+        cascade: false
     })
     supplier?: Supplier[];
 
     @OneToMany(() => TeamMember, (teamMember) => teamMember.country, {
         eager: true,
-        cascade: true
+        cascade: false
     })
     teamMember?: TeamMember[];
 

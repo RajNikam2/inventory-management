@@ -19,9 +19,15 @@ export class TeamMember{
 
     @Column()
     assigned_territories: string; 
-
+    
     @Column()
     notes: string; 
+
+    @Column()
+    username:string;
+
+    @Column()
+    password:string;
 
     @ManyToOne(() => Country, (country) => country.teamMember)
     @JoinColumn({ name: 'countryId' })
@@ -29,7 +35,7 @@ export class TeamMember{
 
     @OneToMany(() => Order, (order) => order.teamMember,{
         eager: true, 
-        cascade: true  
+        cascade: false  
     })
     order?: Order[];
  

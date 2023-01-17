@@ -24,7 +24,7 @@ export class Document{
     recieved_by:string;
 
     @Column()
-    documentId:number;
+    doc_id:number;
 
     @Column()
     date:Date;  //ask to sir

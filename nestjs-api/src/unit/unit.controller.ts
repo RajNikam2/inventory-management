@@ -5,7 +5,7 @@ import { Unit } from "./unit.entity";
 import { UnitService } from "./unit.service";
 
 @Controller('unit')
-export class UnitController {
+export class UnitController{
   constructor(
     private readonly unitService: UnitService
   ) { }
